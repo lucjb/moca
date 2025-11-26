@@ -1,0 +1,15 @@
+searches:
+  - destinations: ["Mallorca", "Valencia"]
+    checkin: 2024-08-15
+    checkout: 2024-08-22
+    checkin_flexibility: {days_before: 1, days_after: 2}
+    checkout_flexibility: {days_before: 0, days_after: 1}
+    adults: 2
+    children: 1
+    rooms: 1
+    beachfront: true
+    close_to_center: true
+    pool: true
+    bathrooms: 1
+    free_cancellation: true
+    property_types: ["hotel", "apartment", "house"]
