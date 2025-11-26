@@ -1,0 +1,15 @@
+searches:
+  - destinations: ["Fuerteventura"]
+    checkin: 2025-12-19
+    checkout: 2025-12-26
+    checkin_flexibility: {days_before: 0, days_after: 7}
+    checkout_flexibility: {days_before: 0, days_after: 7}
+    adults: 2
+    children: 3
+    rooms: 1
+    beachfront: true
+    close_to_center: true
+    pool: true
+    bathrooms: 1
+    free_cancellation: true
+    property_types: ["hotel"]
