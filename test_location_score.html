@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location Score Extraction Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .success {
+            color: #059669;
+            font-weight: bold;
+        }
+        .error {
+            color: #dc2626;
+            font-weight: bold;
+        }
+        .info {
+            color: #6b7280;
+        }
+        button {
+            padding: 10px 20px;
+            background: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #4338ca;
+        }
+        pre {
+            background: #f3f4f6;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Location Score Extraction Test</h1>
+    
+    <div class="test-section">
+        <h2>Test Configuration</h2>
+        <p><strong>Test URL:</strong> <span id="testUrl"></span></p>
+        <button onclick="runTest()">Run Test</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test Results</h2>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        const TEST_URL = 'https://www.booking.com/hotel/es/secrets-bahia-real.en-gb.html?aid=304142&label=mkt123sc-c87604f6-a102-4a0b-9ef7-ccaf97e953ca&sid=d5fc4abc30150af429fc950ff25c7f87&all_sr_blocks=9754745_421149905_2_41_0&checkin=2025-12-18&checkout=2025-12-25&dist=0&group_adults=2&group_children=0&hapos=2&highlighted_blocks=9754745_421149905_2_41_0&hpos=2&matching_block_id=9754745_421149905_2_41_0&nad_cpc=1.5&nad_id=d6d9f2bf-52ce-404e-bc32-5e764df0ad68_0&nad_placement=SR_MAIN&nad_track=eyJhdWN0aW9uRXBvY2giOjE3NjQyMzE1ODg1NzEsInJhbmsiOjEsImtvZGRpVHJhY2tpbmdJbmZvIjoiZTlPRjBLbVd0V0RhV3ptd0k0TmpEL0o3dXQ1d1VmWmpIbnlRR3ZhV0g5YnZoaXJRTG95S3EyM3hVQU9nQVlwSUtUR3hBdExZaS9zVmhCQ1dmNCsvSFZqeFdrUGVvNHdQR3ZoVUhQYUhuWHBGbC9xYWhkdHJlRHI5a0t6ZmJ2ajFxTU00RVFEOEhrV0FOZUlmUjVDcGwvc0RPY2ZEOWVXck1XS0pXT0UyWE9HVlU4d3E0enZGMGpDOUttdW43L0h5UUZUMmtub1J0QjF3dkNvL21GelVMZWtONzdCRUVZWFZxN09qdzBkUW5iRlJhZVh5M054bURxdHMwWHhKb2hCM1dVQ2hEdU04bmM5R2tTL1ZiZzRQUjJpQ0hmdmlZYkpteWp4VzVsWnlWNW9TSG9OeVNUQVZna2tJS090dG1heGhiZHlhcUlQL2MrdGdkMkVFbmg5T1QzUENmc2VCdXNLbWRkZHppei93a2d6YzBFWFRiUGlRT0JTb0lWRTFZSTQrajFNZTlNaHpJdlNPVE1zZkwzcUQzNGd5cHJUL09xZkRQdWRQeXh5ODNkSVJTVHNidGNKNGRXdTRSTlltQVNWODdYajJWTVlFNmwwaTQwTFlXODNWQXBpcENwMHVmazhXYTlrYTJVYkN0Y0V5R0Z0R2IzWVNJZUZvbkw3bk0wbU54WFF1NVg0Mzk2T1MyVi91S21rYmVSKzZKSnN1cjM4VVpLd05rNlhnZThjUjRaeDBVbkpZdXdhTGErNGR4SDNEbkJDZ0FwWE0xeUE3TjNEMkhGdVJwcm4vV0lpd3RiMWZtZmdhLzNWRlBVeUZlTFZFckNKeTY5ME9JaU1uREpXdHMzMFE1YTVLRXQ5OFZLZFltN09UR0Y1MEswMlorQkpjbWovalg0ekJNb0ZHWGp5UTh0cVErZGpHN1A2WERLT042ZlZMRFFSRW9DWnZQMXRjamQ3Y2twVHRKRkE1NVZqeFQxMkVRcVR1QmpFbTVRUG4vR094Q0tGMW0rV3ZXd2licUZZR1JpSWRPWUtxNGNLbDdaQlo1Z085RjZhTENWNTRlM3FhSDYzSEVBeWtXYzlyMkk1b3FBSlgwMlFBRFhsUytrUUxDTHJYcHJZOEdNTTdidGJKck9BcG5CaWh3dEg4YXFtNGlzcmxhWm1vTkhxVkl2SXlkSXM3VXRKUVc5bUlqQTUrbTByOFRyRW5jeDgyNzUvbnEwNDQ3SWVRVlBucFB4L1lTMVc1RzVxU3JHQWIyRm1EU0d5RTBDZkhWaGZDbWZkcExCbVZiL1JFZmZVZjhUWEkyRzVWUStoUDk2bVRUd21GL2VzWnNvdCtlRnVaaUN0Y0gwbVpkaEI5MDVxZzNaeHZBL3dWYTUrRk96Yk1rMkdUd3A4YVlua2pRV1orVEZvMnlNYUQxVUl5QVlyeEtsSUZYL0lLejlPZENiNDA1S2g5ZEYwRWtKcTUwc2QvMzE1QjA2S2YzVXlGNDRwOHpwMG4rN3VrTnFjaUR5UVp2UlpjaE8rZVVUa1VCcVd6cytYeGVQelljamdoell6SXZkelhON0xQTStxM2RmMUhlUUdmL0xvbWlLWXVKY2l2SWNFUU9UMzJBTmxxajBnampPcTh6YlhrODZaSUJPbEh6YTB5eWt6dEh2UjZFaDRXdkNwek9PNjJJYm9IT1J6RGhPb0NqdmE4alRIMExjSnU1aCtuK2hhZUR4Z081UHZGempIUVRKRjJBTUxydXJkNFFDRDFtWG9EZTV6OCt1MlFTaERlcWJVcHF3SGVSaURUN1hZR3B5QnBUOVJaaEs5M2pmVEoxb0tieW1mbmtyTFFUV1FJOTZNQThXdVo5bTF5T2xlbGg1eXVIYk9pSmtGS0Rid1E0LzJ2L2cybE5qNWRJUTV2MjdyR1hSNllZQ3NZQzEzL3d4eFNvTUR2QjNYV0U4cWMrWFV2QzFMenRFQWEwVFkwL1Z0a2N3T1A4dDV2R0F5anlYRHNqUUFZS1ZBYng1YnhiSTBMaWVFT1E4cz0ifQ%3D%3D&nflt=fc%3D1&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=9754745_421149905_2_41_0__189000&srepoch=1764231589&srpvid=a7f28ef56038e592aceaccd652030d3d&type=total&ucfs=1&#tab-reviews';
+        const CORS_PROXY = 'http://localhost:8080/?url=';
+        
+        document.getElementById('testUrl').textContent = TEST_URL;
+
+        function extractBeachInfoFromPropertyPage(doc, html) {
+            const beachInfo = {
+                locationScore: null,
+                summary: null
+            };
+            
+            console.log(`Extracting location score. HTML length: ${html.length}`);
+            const htmlLower = html.toLowerCase();
+            const hasReviewSubscore = html.includes('review-subscore') || html.includes('review_subscore');
+            const hasLocation = htmlLower.includes('location');
+            console.log(`HTML contains "review-subscore": ${hasReviewSubscore}`);
+            console.log(`HTML contains "location": ${hasLocation}`);
+            
+            let locationScore = null;
+            
+            // PRIMARY METHOD: Search raw HTML directly - most reliable
+            // Strategy: Find "location" near "review-subscore", then find the score
+            if (hasReviewSubscore && hasLocation) {
+                console.log('Searching raw HTML for location score...');
+                
+                // Find all occurrences of "location" in the HTML
+                const locationMatches = [];
+                let searchIndex = 0;
+                while ((searchIndex = htmlLower.indexOf('location', searchIndex)) !== -1) {
+                    locationMatches.push(searchIndex);
+                    searchIndex += 1;
+                }
+                
+                console.log(`Found ${locationMatches.length} occurrences of "location" in HTML`);
+                
+                // For each "location" occurrence, check if it's near a review-subscore
+                for (const locIndex of locationMatches) {
+                    // Get context around "location" (500 chars before, 1000 chars after)
+                    const contextStart = Math.max(0, locIndex - 500);
+                    const contextEnd = Math.min(html.length, locIndex + 1000);
+                    const context = html.substring(contextStart, contextEnd);
+                    const contextLower = context.toLowerCase();
+                    
+                    // Check if this context contains "review-subscore"
+                    if (contextLower.includes('review-subscore') || contextLower.includes('review_subscore')) {
+                        console.log(`Found "location" near "review-subscore" at index ${locIndex}`);
+                        
+                        // Now look for aria-hidden="true" followed by a number in this context
+                        // The score should be after "location" in the context
+                        const locationInContext = contextLower.indexOf('location');
+                        const afterLocation = context.substring(locationInContext + 8);
+                        
+                        // Try multiple patterns for aria-hidden
+                        const ariaPatterns = [
+                            /aria-hidden=["']true["'][^>]*>(\d+\.?\d*)/i,
+                            /aria-hidden\s*=\s*["']true["'][^>]*>(\d+\.?\d*)/i,
+                            /aria-hidden=["']true["'][^>]*>\s*(\d+\.?\d*)/i
+                        ];
+                        
+                        for (const pattern of ariaPatterns) {
+                            const scoreMatch = afterLocation.match(pattern);
+                            if (scoreMatch && scoreMatch[1]) {
+                                const score = parseFloat(scoreMatch[1]);
+                                if (score >= 1 && score <= 10) {
+                                    locationScore = score;
+                                    console.log(`✓ Extracted location score: ${locationScore}`);
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        // If not found via aria-hidden, look for any number after "location"
+                        if (locationScore === null) {
+                            // Find numbers in the context after "location"
+                            const numbers = afterLocation.match(/(\d+\.?\d*)/g);
+                            if (numbers) {
+                                for (const numStr of numbers) {
+                                    const score = parseFloat(numStr);
+                                    if (score >= 1 && score <= 10) {
+                                        // Check if this number appears in an element (not just text)
+                                        const numIndex = afterLocation.indexOf(numStr);
+                                        const beforeNum = afterLocation.substring(Math.max(0, numIndex - 50), numIndex);
+                                        
+                                        // Look for HTML tags around this number (indicates it's in an element)
+                                        if (beforeNum.includes('>') || beforeNum.includes('<')) {
+                                            locationScore = score;
+                                            console.log(`✓ Extracted location score (number in element): ${locationScore}`);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                        if (locationScore !== null) break;
+                    }
+                }
+            }
+            
+            // FALLBACK: Try DOM querySelector (in case HTML structure is different)
+            if (locationScore === null) {
+                let reviewSubscores = doc.querySelectorAll('div[data-testid="review-subscore"]');
+                if (reviewSubscores.length === 0) {
+                    reviewSubscores = doc.querySelectorAll('[data-testid="review-subscore"]');
+                }
+                console.log(`DOM querySelector found ${reviewSubscores.length} review-subscore elements`);
+                
+                // Look for the one that contains "location"
+                for (const subscoreDiv of reviewSubscores) {
+                const text = (subscoreDiv.textContent || '').toLowerCase();
+                
+                    // Check if this div contains the word "location"
+                if (text.includes('location')) {
+                    console.log(`Found location subscore div`);
+                    
+                    // Based on Booking.com structure from README:
+                    // The score is in a sibling div with aria-hidden="true"
+                    // Structure: review-subscore > div > div > (div with Location) + (div with score)
+                    
+                    // First, try to find the div with aria-hidden="true" that contains the score
+                    const ariaHiddenElements = subscoreDiv.querySelectorAll('[aria-hidden="true"]');
+                    for (const el of ariaHiddenElements) {
+                        const elText = (el.textContent || '').trim();
+                        // Check if it's just a number (the score)
+                        const scoreMatch = elText.match(/^(\d+\.?\d*)$/);
+                        if (scoreMatch) {
+                            const score = parseFloat(scoreMatch[1]);
+                            if (score >= 1 && score <= 10) {
+                                locationScore = score;
+                                console.log(`Extracted location score from aria-hidden element: ${locationScore}`);
+                                break;
+                            }
+                        }
+                    }
+                    
+                    // If not found via aria-hidden, look for sibling divs
+                    // The structure has two sibling divs with class "ca9d921c46"
+                    // One contains "Location", the other contains the score
+                    if (locationScore === null) {
+                        // Find all direct child divs that might contain the score
+                        // Look for divs that don't contain "location" but contain a number
+                        const allDivs = subscoreDiv.querySelectorAll('div');
+                        for (const div of allDivs) {
+                            const divText = (div.textContent || '').toLowerCase();
+                            // Skip if it contains "location"
+                            if (divText.includes('location')) continue;
+                            
+                            // Check if this div contains just a number (the score)
+                            const scoreMatch = divText.trim().match(/^(\d+\.?\d*)$/);
+                            if (scoreMatch) {
+                                const score = parseFloat(scoreMatch[1]);
+                                if (score >= 1 && score <= 10) {
+                                    locationScore = score;
+                                    console.log(`Extracted location score from sibling div: ${locationScore}`);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    
+                    // If still not found, check all child elements for numbers
+                    if (locationScore === null) {
+                        const allElements = subscoreDiv.querySelectorAll('*');
+                        for (const el of allElements) {
+                            const elText = (el.textContent || '').trim();
+                            // Skip if it contains "location"
+                            if (elText.toLowerCase().includes('location')) continue;
+                            
+                            // Look for a number that could be a score (1-10, possibly decimal)
+                            const scoreMatch = elText.match(/^(\d+\.?\d*)$/);
+                            if (scoreMatch) {
+                                const score = parseFloat(scoreMatch[1]);
+                                if (score >= 1 && score <= 10) {
+                                    locationScore = score;
+                                    console.log(`Extracted location score from element: ${locationScore} (element text: "${elText}")`);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    
+                    // Last resort: extract any number from the div's text content (excluding "location")
+                    if (locationScore === null) {
+                        const allText = subscoreDiv.textContent || '';
+                        const numbers = allText.match(/(\d+\.?\d*)/g);
+                        if (numbers) {
+                            for (const numStr of numbers) {
+                                const score = parseFloat(numStr);
+                                if (score >= 1 && score <= 10) {
+                                    locationScore = score;
+                                    console.log(`Extracted location score from div text: ${locationScore}`);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    
+                    if (locationScore !== null) break;
+                }
+            }
+            
+            beachInfo.locationScore = locationScore;
+            
+            // Generate summary
+            if (locationScore !== null) {
+                beachInfo.summary = `Location: ${locationScore}/10`;
+            } else {
+                beachInfo.summary = 'No location score';
+            }
+            
+            return beachInfo;
+        }
+
+        async function runTest() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<p class="info">Fetching page...</p>';
+            
+            try {
+                // Construct reviews tab URL
+                let reviewsUrl = TEST_URL;
+                if (reviewsUrl.includes('#')) {
+                    reviewsUrl = reviewsUrl.split('#')[0];
+                }
+                reviewsUrl = reviewsUrl + '#tab-reviews';
+                
+                console.log(`Fetching: ${reviewsUrl}`);
+                
+                // Use CORS proxy
+                const proxyUrl = `${CORS_PROXY}${encodeURIComponent(reviewsUrl)}`;
+                
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 15000);
+                
+                const response = await fetch(proxyUrl, {
+                    headers: {
+                        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+                        'Accept-Language': 'en-US,en;q=0.9',
+                    },
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeoutId);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const html = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                
+                // Extract beach info
+                const beachInfo = extractBeachInfoFromPropertyPage(doc, html);
+                
+                // Display results
+                let resultHtml = '<h3>Extraction Results</h3>';
+                
+                if (beachInfo.locationScore !== null) {
+                    resultHtml += `<p class="success">✓ Location Score Found: ${beachInfo.locationScore}/10</p>`;
+                    resultHtml += `<p class="success">✓ Summary: ${beachInfo.summary}</p>`;
+                } else {
+                    resultHtml += `<p class="error">✗ Location Score Not Found</p>`;
+                    resultHtml += `<p class="error">Summary: ${beachInfo.summary}</p>`;
+                }
+                
+                // Show debug info
+                const reviewSubscores = doc.querySelectorAll('div[data-testid="review-subscore"]');
+                resultHtml += `<h4>Debug Information</h4>`;
+                resultHtml += `<p class="info">Found ${reviewSubscores.length} review-subscore divs</p>`;
+                
+                // Show all review-subscore divs
+                resultHtml += `<h4>All Review Subscore Divs:</h4>`;
+                reviewSubscores.forEach((div, index) => {
+                    const text = div.textContent.trim();
+                    const hasLocation = text.toLowerCase().includes('location');
+                    resultHtml += `<div style="margin: 10px 0; padding: 10px; background: ${hasLocation ? '#d1fae5' : '#f3f4f6'}; border-radius: 4px;">`;
+                    resultHtml += `<strong>Div ${index + 1}${hasLocation ? ' (LOCATION)' : ''}:</strong><br>`;
+                    resultHtml += `<pre style="margin: 5px 0; font-size: 12px;">${escapeHtml(text.substring(0, 200))}${text.length > 200 ? '...' : ''}</pre>`;
+                    resultHtml += `<pre style="margin: 5px 0; font-size: 10px; color: #6b7280;">${escapeHtml(div.outerHTML.substring(0, 500))}${div.outerHTML.length > 500 ? '...' : ''}</pre>`;
+                    resultHtml += `</div>`;
+                });
+                
+                // Show location div details if found
+                const locationDiv = Array.from(reviewSubscores).find(div => 
+                    div.textContent.toLowerCase().includes('location')
+                );
+                if (locationDiv) {
+                    resultHtml += `<h4>Location Subscore Div Details:</h4>`;
+                    resultHtml += `<pre>${escapeHtml(locationDiv.outerHTML)}</pre>`;
+                    
+                    // Show all child elements
+                    resultHtml += `<h4>Child Elements in Location Div:</h4>`;
+                    const allElements = locationDiv.querySelectorAll('*');
+                    allElements.forEach((el, index) => {
+                        const elText = el.textContent.trim();
+                        resultHtml += `<div style="margin: 5px 0; padding: 5px; background: #f9fafb; border-left: 3px solid #4f46e5;">`;
+                        resultHtml += `<strong>Element ${index + 1} (${el.tagName}):</strong> "${escapeHtml(elText.substring(0, 100))}"`;
+                        if (elText.match(/^\d+\.?\d*$/)) {
+                            resultHtml += ` <span class="success">← Potential Score!</span>`;
+                        }
+                        resultHtml += `</div>`;
+                    });
+                }
+                
+                resultsDiv.innerHTML = resultHtml;
+                
+            } catch (error) {
+                resultsDiv.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+                console.error('Test error:', error);
+            }
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>
+
