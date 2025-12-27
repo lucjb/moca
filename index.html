@@ -1,0 +1,3839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOCA - Accommodation Search</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f7fa;
+            color: #2d3748;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            padding: 48px 24px;
+            margin: -24px -24px 32px -24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            opacity: 0.95;
+            font-size: 1.05rem;
+        }
+
+        .search-form {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+            margin-bottom: 24px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .form-section {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .form-section-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stay-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+        }
+
+        .stay-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stay-group label {
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: #4b5563;
+            font-size: 0.75rem;
+        }
+
+        .stay-group input {
+            padding: 6px 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 0.8125rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #374151;
+            font-size: 0.8125rem;
+            letter-spacing: 0.025em;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 6px 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            background: white;
+            color: #111827;
+        }
+
+        .form-group input:hover,
+        .form-group select:hover {
+            border-color: #9ca3af;
+        }
+
+        .form-group select[multiple] {
+            min-height: 150px;
+            padding: 8px;
+        }
+
+        .form-group select[multiple] option {
+            padding: 8px;
+            margin: 2px 0;
+        }
+
+        .form-group small {
+            display: block;
+            color: #6b7280;
+            font-size: 0.8125rem;
+            margin-top: 6px;
+            line-height: 1.4;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+            padding: 6px 8px;
+            border-radius: 6px;
+            transition: background-color 0.15s;
+        }
+
+        .checkbox-group:hover {
+            background-color: #f9fafb;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #4f46e5;
+        }
+
+        .checkbox-group label {
+            cursor: pointer;
+            user-select: none;
+            font-size: 0.8125rem;
+            color: #374151;
+        }
+
+        .search-button {
+            width: 100%;
+            padding: 14px 24px;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-button:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+        }
+
+        .search-button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .search-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            text-align: center;
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            margin: 24px 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+        }
+
+        .loading p {
+            color: #4b5563;
+            font-size: 0.9375rem;
+            margin-top: 16px;
+        }
+
+        .spinner {
+            border: 3px solid #e5e7eb;
+            border-top: 3px solid #4f46e5;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #results {
+            display: block !important;
+        }
+
+        #results .tabs {
+            display: flex !important;
+            flex-direction: row !important;
+        }
+
+        #results .tab-content {
+            display: none;
+        }
+
+        #results .tab-content.active {
+            display: block !important;
+        }
+
+        .result-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .result-card h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .result-card .provider-badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .result-card .destination {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .result-card .price {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #667eea;
+            margin: 10px 0;
+        }
+
+        .result-card .rating {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .result-card small {
+            display: block;
+            color: #999;
+            font-size: 0.8em;
+            margin-top: 3px;
+        }
+
+        .result-card .link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .result-card .link:hover {
+            text-decoration: underline;
+        }
+
+        .result-card .dates-container {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 6px;
+        }
+
+        .result-card .dates-container .dates-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .result-card .dates-container .date-item {
+            padding: 6px 0;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.9em;
+        }
+
+        .result-card .dates-container .date-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-card .dates-container .date-range {
+            color: #666;
+        }
+
+        .result-card .dates-container .date-price {
+            color: #667eea;
+            font-weight: 600;
+            margin-top: 3px;
+        }
+
+        .stats {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+        }
+
+        .stats h2 {
+            color: #111827;
+            margin-bottom: 16px;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .stats p {
+            color: #4b5563;
+            margin-bottom: 8px;
+            font-size: 0.9375rem;
+        }
+
+        .stats strong {
+            color: #111827;
+            font-weight: 600;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            margin-top: 24px;
+        }
+
+        table thead {
+            background: #f9fafb;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        table th {
+            text-align: left;
+            padding: 14px 16px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: #374151;
+            letter-spacing: 0.025em;
+            text-transform: uppercase;
+        }
+
+        table tbody tr {
+            border-bottom: 1px solid #f3f4f6;
+            transition: background-color 0.15s;
+        }
+
+        table tbody tr:hover {
+            background-color: #f9fafb;
+        }
+
+        table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        table td {
+            padding: 14px 16px;
+            font-size: 0.9375rem;
+            color: #111827;
+        }
+
+        table td a {
+            color: #4f46e5;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.15s;
+        }
+
+        table td a:hover {
+            color: #4338ca;
+            text-decoration: underline;
+        }
+
+        .date-header-row {
+            background: #f3f4f6 !important;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .date-header-row:hover {
+            background: #e5e7eb !important;
+        }
+
+        .reload-button {
+            padding: 4px 12px;
+            background: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            transition: background-color 0.15s;
+            margin-left: 12px;
+            white-space: nowrap;
+        }
+
+        .reload-button:hover {
+            background: #4338ca;
+        }
+
+        .reload-button:active {
+            background: #3730a3;
+        }
+
+        .stop-button {
+            padding: 4px 12px;
+            background: #dc2626;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: background-color 0.15s;
+        }
+
+        .stop-button:hover {
+            background: #b91c1c;
+        }
+
+        .stop-button:active {
+            background: #991b1b;
+        }
+
+        .tabs {
+            display: flex;
+            flex-direction: row;
+            gap: 0;
+            border-bottom: 2px solid #e5e7eb;
+            margin-bottom: 24px;
+            background: white;
+            border-radius: 12px 12px 0 0;
+            padding: 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            width: 100%;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: #6b7280;
+            transition: all 0.2s;
+            border-radius: 12px 12px 0 0;
+            white-space: nowrap;
+            min-width: 0;
+        }
+
+        .tab-button:hover {
+            color: #4f46e5;
+            background: #f9fafb;
+        }
+
+        .tab-button.active {
+            color: #4f46e5;
+            border-bottom-color: #4f46e5;
+            background: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .hotel-header-row {
+            background: #f3f4f6 !important;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .hotel-header-row:hover {
+            background: #e5e7eb !important;
+        }
+
+        .date-badge {
+            display: inline-block;
+            padding: 6px 10px;
+            background: #e0e7ff;
+            color: #3730a3;
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        #hotel-view table td {
+            vertical-align: top;
+        }
+
+        #hotel-view table th:nth-child(1) {
+            width: 25%;
+        }
+
+        #hotel-view table th:nth-child(2) {
+            width: 35%;
+        }
+
+        #hotel-view table th:nth-child(3),
+        #hotel-view table th:nth-child(4) {
+            width: 12%;
+        }
+
+        #hotel-view table th:nth-child(5) {
+            width: 8%;
+        }
+
+        .error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 24px 0;
+            font-size: 0.9375rem;
+        }
+
+        .error button {
+            margin-left: 12px;
+            padding: 6px 16px;
+            background: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.15s;
+        }
+
+        .error button:hover {
+            background: #4338ca;
+        }
+
+        .date-section {
+            margin: 30px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .date-section h2 {
+            color: #333;
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        .date-section p {
+            color: #666;
+            margin: 5px 0 0 0;
+            font-size: 0.9em;
+        }
+
+        .error {
+            background: #ff6b6b;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            color: #1565c0;
+        }
+
+        .info-box strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .info-box ol {
+            margin: 10px 0 0 20px;
+            padding: 0;
+        }
+
+        .info-box code {
+            background: rgba(255, 255, 255, 0.5);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+
+        h3 {
+            color: #111827;
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            margin-top: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏨 MOCA</h1>
+            <p>Multi-Provider Accommodation Search</p>
+        </div>
+
+        <div class="search-form">
+            <form id="searchForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="destinations">Destinations (comma-separated)</label>
+                        <input type="text" id="destinations" value="Fuerteventura" required>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-section-title">Stay Details</div>
+                    <div class="stay-grid">
+                        <div class="stay-group">
+                            <label for="checkin">Check-in Date</label>
+                            <input type="date" id="checkin" required>
+                        </div>
+                        <div class="stay-group">
+                            <label for="checkout">Check-out Date</label>
+                            <input type="date" id="checkout" required>
+                        </div>
+                        <div class="stay-group">
+                            <label for="checkinFlexBefore">Check-in: Days Before</label>
+                            <input type="number" id="checkinFlexBefore" value="0" min="0" max="30">
+                        </div>
+                        <div class="stay-group">
+                            <label for="checkinFlexAfter">Check-in: Days After</label>
+                            <input type="number" id="checkinFlexAfter" value="0" min="0" max="30">
+                        </div>
+                        <div class="stay-group">
+                            <label for="checkoutFlexBefore">Check-out: Days Before</label>
+                            <input type="number" id="checkoutFlexBefore" value="0" min="0" max="30">
+                        </div>
+                        <div class="stay-group">
+                            <label for="checkoutFlexAfter">Check-out: Days After</label>
+                            <input type="number" id="checkoutFlexAfter" value="0" min="0" max="30">
+                        </div>
+                        <div class="stay-group">
+                            <label for="minStayLength">Min Stay (nights)</label>
+                            <input type="number" id="minStayLength" min="1" placeholder="Optional">
+                        </div>
+                        <div class="stay-group">
+                            <label for="maxStayLength">Max Stay (nights)</label>
+                            <input type="number" id="maxStayLength" min="1" placeholder="Optional">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="adults">Adults</label>
+                        <input type="number" id="adults" value="2" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="childAges">Children Ages</label>
+                        <input type="text" id="childAges" placeholder="e.g. 3, 3, 8">
+                    </div>
+                    <div class="form-group">
+                        <label for="rooms">Rooms</label>
+                        <input type="number" id="rooms" value="1" min="1" required>
+                    </div>
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label style="margin-bottom: 6px;">Property Type (hotel vs house, OR logic)</label>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; margin-top: 4px;">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="propertyTypeHotel" checked>
+                                <label for="propertyTypeHotel">Hotel (hotel, resort, similar)</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="propertyTypeHouse">
+                                <label for="propertyTypeHouse">House (apartment, villa, holiday home, etc.)</label>
+                            </div>
+                        </div>
+                        <small style="color: #666; font-size: 0.85em; display: block; margin-top: 5px;">
+                            Properties matching any selected type will be shown. When in doubt, listings are treated as hotels.
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label for="minReviewScore">Minimum Review Score</label>
+                        <input type="number" id="minReviewScore" min="0" max="10" step="0.1" placeholder="Optional (0-10)">
+                    </div>
+                </div>
+                <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #e0e0e0;">
+                    <h3 style="margin-top: 0; margin-bottom: 12px; font-size: 1rem;">Preferences</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="freeCancellation" checked>
+                                <label for="freeCancellation">Free Cancellation</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="pool">
+                                <label for="pool">Pool</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="beachfront">
+                                <label for="beachfront">Beachfront</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="niceBeach">
+                                <label for="niceBeach">Nice Beach</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="allInclusive">
+                                <label for="allInclusive">All Inclusive</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="largeRoom">
+                                <label for="largeRoom">Large Room</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="lift">
+                                <label for="lift">Lift/Elevator</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="groundFloor">
+                                <label for="groundFloor">Ground Floor</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="closeToCenter">Close to Center (minutes)</label>
+                            <input type="number" id="closeToCenter" min="0" placeholder="Optional">
+                        </div>
+                        <div class="form-group">
+                            <label for="maxTransfer">Max Transfer Time (minutes)</label>
+                            <input type="number" id="maxTransfer" min="0" placeholder="Optional">
+                        </div>
+                        <div class="form-group">
+                            <label for="bathrooms">Number of Bathrooms</label>
+                            <input type="number" id="bathrooms" min="0" placeholder="Optional">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="search-button" id="searchButton">Search Accommodations</button>
+            </form>
+        </div>
+
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p id="loadingText">Searching for accommodations...</p>
+        </div>
+
+        <div id="error" class="error" style="display: none;"></div>
+
+        <div id="stats" class="stats" style="display: none;"></div>
+        <div id="results" class="results"></div>
+    </div>
+
+    <script>
+        // Set default dates (next month)
+        const today = new Date();
+        const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 19);
+        const checkoutDate = new Date(today.getFullYear(), today.getMonth() + 1, 26);
+        
+        document.getElementById('checkin').value = nextMonth.toISOString().split('T')[0];
+        document.getElementById('checkout').value = checkoutDate.toISOString().split('T')[0];
+
+        // CORS Proxy - use the local Node.js proxy server
+        // Run: node cors-proxy.js
+        // Then the proxy will be available at http://localhost:8080
+        const CORS_PROXY = 'http://localhost:8080/?url=';
+        window.CORS_PROXY = CORS_PROXY; // Make available globally
+        
+        // Browser automation service URL (Puppeteer)
+        // Run: npm install && node browser-service.js
+        // Then the service will be available at http://localhost:8081
+        const BROWSER_SERVICE_URL = 'http://localhost:8081';
+        window.BROWSER_SERVICE_URL = BROWSER_SERVICE_URL; // Make available globally
+
+        class BookingSearcher {
+            constructor() {
+                this.headers = {
+                    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+                    'Accept-Language': 'en-US,en;q=0.9',
+                };
+            }
+
+            async search(criteria, onProgress) {
+                const results = [];
+                const MAX_RETRIES = 10;
+                const RETRY_DELAY_BASE = 1000; // 1 second base delay
+                
+                // Initialize cancellation flag
+                window.searchCancelled = false;
+                
+                // Generate all date combinations based on flexibility and stay length restrictions
+                const dateCombinations = this.generateDateCombinations(
+                    criteria.checkin,
+                    criteria.checkout,
+                    criteria.checkinFlex,
+                    criteria.checkoutFlex,
+                    criteria.minStayLength,
+                    criteria.maxStayLength
+                );
+                
+                console.log(`Searching ${dateCombinations.length} date combinations for ${criteria.destinations.length} destination(s)`);
+                console.log('Date combinations:', dateCombinations);
+                
+                // Track status of each date combination
+                const dateStatus = new Map();
+                const allDateKeys = [];
+                
+                // Initialize all date combinations
+                for (const destination of criteria.destinations) {
+                    for (const [checkin, checkout] of dateCombinations) {
+                        const dateKey = `${checkin}_${checkout}`;
+                        allDateKeys.push({ dateKey, checkin, checkout, destination });
+                        dateStatus.set(dateKey, {
+                            status: 'pending',
+                            retryCount: 0,
+                            results: null,
+                            error: null
+                        });
+                    }
+                }
+                
+                // Helper function to sleep
+                const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+                
+                // Helper function to search a single date combination with retry
+                const searchWithRetry = async (dateKey, checkin, checkout, destination, retryCount = 0) => {
+                    // Check for cancellation
+                    if (window.searchCancelled) {
+                        dateStatus.set(dateKey, {
+                            status: 'error',
+                            retryCount: retryCount,
+                            results: null,
+                            error: 'Search cancelled'
+                        });
+                        if (onProgress) {
+                            onProgress({
+                                dateKey,
+                                checkin,
+                                checkout,
+                                destination,
+                                status: 'error',
+                                error: 'Search cancelled',
+                                retryCount: retryCount
+                            });
+                        }
+                        return false;
+                    }
+                    
+                    try {
+                        // Update status to loading/retrying
+                        const statusText = retryCount > 0 ? `retrying (${retryCount}/${MAX_RETRIES})` : 'loading';
+                        if (onProgress) {
+                            onProgress({
+                                dateKey,
+                                checkin,
+                                checkout,
+                                destination,
+                                status: retryCount > 0 ? 'retrying' : 'loading',
+                                retryCount: retryCount
+                            });
+                        }
+                        
+                        const destinationResults = await this.searchDestination(
+                            destination,
+                            checkin,
+                            checkout,
+                            criteria.occupancy,
+                            criteria.childAges,
+                            criteria.preferences
+                        );
+                        
+                        console.log(`Found ${destinationResults.length} results for ${checkin} to ${checkout}`);
+                        
+                        // Mark as success
+                        dateStatus.set(dateKey, {
+                            status: 'success',
+                            retryCount: retryCount,
+                            results: destinationResults,
+                            error: null
+                        });
+                        
+                        // Add results
+                        results.push(...destinationResults);
+                        
+                        // Notify progress callback with results
+                        if (onProgress) {
+                            onProgress({
+                                dateKey,
+                                checkin,
+                                checkout,
+                                destination,
+                                status: 'success',
+                                results: destinationResults,
+                                retryCount: retryCount
+                            });
+                        }
+                        
+                        return true; // Success
+                    } catch (error) {
+                        console.error(`Error searching ${destination} for ${checkin} to ${checkout} (attempt ${retryCount + 1}):`, error);
+                        
+                        // Update status
+                        dateStatus.set(dateKey, {
+                            status: 'error',
+                            retryCount: retryCount,
+                            results: null,
+                            error: error.message || 'Search failed'
+                        });
+                        
+                        // Check if we should retry
+                        if (retryCount < MAX_RETRIES && !window.searchCancelled) {
+                            // Calculate exponential backoff delay
+                            const delay = RETRY_DELAY_BASE * Math.pow(2, retryCount);
+                            console.log(`Will retry ${dateKey} in ${delay}ms (attempt ${retryCount + 1}/${MAX_RETRIES})`);
+                            
+                            // Wait before retrying (check for cancellation during wait)
+                            for (let i = 0; i < delay; i += 100) {
+                                if (window.searchCancelled) {
+                                    dateStatus.set(dateKey, {
+                                        status: 'error',
+                                        retryCount: retryCount,
+                                        results: null,
+                                        error: 'Search cancelled'
+                                    });
+                                    if (onProgress) {
+                                        onProgress({
+                                            dateKey,
+                                            checkin,
+                                            checkout,
+                                            destination,
+                                            status: 'error',
+                                            error: 'Search cancelled',
+                                            retryCount: retryCount
+                                        });
+                                    }
+                                    return false;
+                                }
+                                await sleep(Math.min(100, delay - i));
+                            }
+                            
+                            // Retry
+                            return await searchWithRetry(dateKey, checkin, checkout, destination, retryCount + 1);
+                        } else {
+                            // Max retries reached
+                            console.error(`Max retries reached for ${dateKey}`);
+                            
+                            // Notify progress callback of final error
+                            if (onProgress) {
+                                onProgress({
+                                    dateKey,
+                                    checkin,
+                                    checkout,
+                                    destination,
+                                    status: 'error',
+                                    error: error.message || 'Search failed after retries',
+                                    retryCount: retryCount
+                                });
+                            }
+                            
+                            return false; // Failed
+                        }
+                    }
+                };
+                
+                // Search all date combinations (first attempt)
+                const searchPromises = allDateKeys.map(({ dateKey, checkin, checkout, destination }) =>
+                    searchWithRetry(dateKey, checkin, checkout, destination, 0)
+                );
+                
+                // Wait for all initial searches to complete
+                await Promise.allSettled(searchPromises);
+                
+                // Check if any failed and need retry
+                let hasFailures = false;
+                const failedDateKeys = [];
+                
+                dateStatus.forEach((status, dateKey) => {
+                    if (status.status === 'error' && status.retryCount < MAX_RETRIES) {
+                        hasFailures = true;
+                        const dateInfo = allDateKeys.find(d => d.dateKey === dateKey);
+                        if (dateInfo) {
+                            failedDateKeys.push(dateInfo);
+                        }
+                    }
+                });
+                
+                // Automatically retry failed requests
+                while (hasFailures && failedDateKeys.length > 0 && !window.searchCancelled) {
+                    console.log(`Retrying ${failedDateKeys.length} failed date combinations...`);
+                    
+                    const retryPromises = failedDateKeys.map(({ dateKey, checkin, checkout, destination }) => {
+                        const currentStatus = dateStatus.get(dateKey);
+                        if (currentStatus && currentStatus.status === 'error' && currentStatus.retryCount < MAX_RETRIES) {
+                            return searchWithRetry(dateKey, checkin, checkout, destination, currentStatus.retryCount + 1);
+                        }
+                        return Promise.resolve(true);
+                    });
+                    
+                    await Promise.allSettled(retryPromises);
+                    
+                    // Check for cancellation
+                    if (window.searchCancelled) {
+                        console.log('Search cancelled, stopping retries');
+                        break;
+                    }
+                    
+                    // Check again for failures
+                    hasFailures = false;
+                    failedDateKeys.length = 0;
+                    
+                    dateStatus.forEach((status, dateKey) => {
+                        if (status.status === 'error' && status.retryCount < MAX_RETRIES) {
+                            hasFailures = true;
+                            const dateInfo = allDateKeys.find(d => d.dateKey === dateKey);
+                            if (dateInfo) {
+                                failedDateKeys.push(dateInfo);
+                            }
+                        }
+                    });
+                }
+                
+                // Log final status
+                const successCount = Array.from(dateStatus.values()).filter(s => s.status === 'success').length;
+                const errorCount = Array.from(dateStatus.values()).filter(s => s.status === 'error').length;
+                console.log(`Search completed: ${successCount} successful, ${errorCount} failed (after retries)`);
+                console.log(`Total results collected: ${results.length}`);
+                
+                return results;
+            }
+
+            generateDateCombinations(baseCheckin, baseCheckout, checkinFlex, checkoutFlex, minStayLength, maxStayLength) {
+                const combinations = [];
+                const seenCombinations = new Set(); // Prevent duplicate combinations
+                
+                // Step 1: Generate all check-in date variations based on flexibility
+                const checkinDates = [];
+                for (let offset = -checkinFlex.daysBefore; offset <= checkinFlex.daysAfter; offset++) {
+                    const date = new Date(baseCheckin);
+                    date.setDate(date.getDate() + offset);
+                    const dateStr = date.toISOString().split('T')[0];
+                    if (!checkinDates.includes(dateStr)) {
+                        checkinDates.push(dateStr);
+                    }
+                }
+                
+                // Ensure base check-in date is included
+                const baseCheckinStr = new Date(baseCheckin).toISOString().split('T')[0];
+                if (!checkinDates.includes(baseCheckinStr)) {
+                    checkinDates.push(baseCheckinStr);
+                }
+                checkinDates.sort();
+                
+                // Step 2: Generate all check-out date variations based on flexibility
+                const checkoutDates = [];
+                for (let offset = -checkoutFlex.daysBefore; offset <= checkoutFlex.daysAfter; offset++) {
+                    const date = new Date(baseCheckout);
+                    date.setDate(date.getDate() + offset);
+                    const dateStr = date.toISOString().split('T')[0];
+                    if (!checkoutDates.includes(dateStr)) {
+                        checkoutDates.push(dateStr);
+                    }
+                }
+                
+                // Ensure base check-out date is included
+                const baseCheckoutStr = new Date(baseCheckout).toISOString().split('T')[0];
+                if (!checkoutDates.includes(baseCheckoutStr)) {
+                    checkoutDates.push(baseCheckoutStr);
+                }
+                checkoutDates.sort();
+                
+                // Step 3: Create all combinations of (checkin, checkout)
+                // Step 4: Filter by stay length (min/max stay length should only REDUCE combinations, never expand)
+                for (const checkinStr of checkinDates) {
+                    const checkinDate = new Date(checkinStr);
+                    
+                    for (const checkoutStr of checkoutDates) {
+                        const checkoutDate = new Date(checkoutStr);
+                        
+                        // Check that checkout is after checkin
+                        if (checkoutDate <= checkinDate) {
+                            continue;
+                        }
+                        
+                        // Calculate stay length
+                        const stayLength = Math.floor((checkoutDate - checkinDate) / (1000 * 60 * 60 * 24));
+                        
+                        // Filter by minimum stay length if specified
+                        if (minStayLength !== null && minStayLength > 0 && stayLength < minStayLength) {
+                            continue;
+                        }
+                        
+                        // Filter by maximum stay length if specified
+                        if (maxStayLength !== null && maxStayLength > 0 && stayLength > maxStayLength) {
+                            continue;
+                        }
+                        
+                        // Prevent duplicate combinations
+                        const comboKey = `${checkinStr}_${checkoutStr}`;
+                        if (!seenCombinations.has(comboKey)) {
+                            seenCombinations.add(comboKey);
+                            combinations.push([checkinStr, checkoutStr]);
+                        }
+                    }
+                }
+                
+                return combinations;
+            }
+
+            async searchDestination(destination, checkin, checkout, occupancy, childAges, preferences) {
+                // Booking search results are paginated (typically 25 per page).
+                // To avoid missing properties that appear on later pages, we
+                // fetch multiple pages until we either run out of results or
+                // hit a reasonable page limit.
+                const allResults = [];
+                const maxPages = 3; // fetch up to 3 pages (≈75 properties) per date/destination
+                const pageSize = 25;
+
+                for (let page = 0; page < maxPages; page++) {
+                    const offset = page * pageSize;
+
+                    const params = new URLSearchParams({
+                        ss: destination,
+                        checkin: checkin,
+                        checkout: checkout,
+                        group_adults: occupancy.adults.toString(),
+                        group_children: occupancy.children.toString(),
+                        no_rooms: occupancy.rooms.toString(),
+                        sb_travel_purpose: 'leisure',
+                    });
+
+                    if (offset > 0) {
+                        params.set('offset', offset.toString());
+                    }
+
+                    // Child ages: Booking sends one age + req_age per child.
+                    const effectiveChildAges = (childAges && childAges.length)
+                        ? childAges.slice(0, occupancy.children)
+                        : Array.from({ length: occupancy.children }, () => 0);
+
+                    effectiveChildAges.forEach(age => {
+                        params.append('age', age.toString());
+                        params.append('req_age', age.toString());
+                    });
+
+                    // Build Booking.com filter string (nflt) to better match the site behaviour
+                    const nfltFilters = [];
+
+                    // Free cancellation (approximation)
+                    if (preferences.freeCancellation) {
+                        nfltFilters.push('fc=1');
+                    }
+
+                    // All inclusive meal plan (matches example URL with mealplan=4)
+                    if (preferences.allInclusive) {
+                        nfltFilters.push('mealplan=4');
+                    }
+
+                    if (nfltFilters.length > 0) {
+                        params.append('nflt', nfltFilters.join(';'));
+                    }
+
+                    const url = `https://www.booking.com/searchresults.html?${params.toString()}`;
+                    
+                    // Use browser service instead of CORS proxy for JavaScript-rendered content
+                    const browserServiceUrl = window.BROWSER_SERVICE_URL || 'http://localhost:8081';
+                    const fetchUrl = `${browserServiceUrl}/fetch-search-results?url=${encodeURIComponent(url)}`;
+
+                    try {
+                        // Add timeout to fetch request (60 seconds - browser service takes longer)
+                        const controller = new AbortController();
+                        const timeoutId = setTimeout(() => controller.abort(), 60000);
+                        
+                        let response;
+                        try {
+                            response = await fetch(fetchUrl, {
+                                method: 'GET',
+                                mode: 'cors',
+                                signal: controller.signal,
+                            });
+                            clearTimeout(timeoutId);
+                        } catch (fetchError) {
+                            clearTimeout(timeoutId);
+                            if (fetchError.name === 'AbortError') {
+                                throw new Error('Request timeout - search took too long');
+                            }
+                            throw new Error(`Network error: ${fetchError.message}`);
+                        }
+
+                        if (!response.ok) {
+                            console.error(`HTTP error on page ${page} for ${destination}:`, response.status, response.statusText);
+                            // For non-200 responses, throw error so it can be handled by the progress callback
+                            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                        }
+
+                        const result = await response.json();
+                        
+                        if (result.error) {
+                            throw new Error(result.error);
+                        }
+                        
+                        const html = result.html;
+                        
+                        if (!html) {
+                            throw new Error('No HTML content returned from browser service');
+                        }
+                        
+                        console.log(`[DEBUG] Received HTML from browser service: ${html.length} chars for ${destination} page ${page}`);
+                        
+                        // Check if page is suspiciously small (likely incomplete or blocked)
+                        if (html.length < 10000) {
+                            console.warn(`[DEBUG] Page is suspiciously small (${html.length} chars) for ${destination}. This might indicate blocking, redirect, or incomplete page.`);
+                            
+                            // Check if it's a blocking/error page
+                            const htmlLower = html.toLowerCase();
+                            if (htmlLower.includes('blocked') || 
+                                htmlLower.includes('access denied') ||
+                                htmlLower.includes('forbidden') ||
+                                htmlLower.includes('captcha') ||
+                                htmlLower.includes('cloudflare') ||
+                                htmlLower.includes('checking your browser')) {
+                                throw new Error(`Page appears to be blocked or requires verification (HTML length: ${html.length} chars)`);
+                            }
+                            
+                            // Check if it's a redirect or error page
+                            if (htmlLower.includes('redirect') || 
+                                htmlLower.includes('error page') ||
+                                htmlLower.includes('not found') ||
+                                html.length < 2000) {
+                                throw new Error(`Page appears to be incomplete or redirected (HTML length: ${html.length} chars)`);
+                            }
+                        }
+                        
+                        // Validate that we got a complete, valid Booking.com search results page
+                        const validationResult = this.validateSearchResultsPage(html, destination, checkin, checkout);
+                        
+                        if (!validationResult.isValid) {
+                            console.warn(`Invalid/incomplete page detected for ${destination} (${checkin} to ${checkout}): ${validationResult.reason}`);
+                            throw new Error(validationResult.reason || 'Page appears to be incomplete or invalid');
+                        }
+                        
+                        const pageResults = this.parseResults(html, destination, checkin, checkout, preferences);
+                        
+                        // Check if parsing marked this as suspicious empty result
+                        if (pageResults && pageResults._suspiciousEmpty) {
+                            delete pageResults._suspiciousEmpty; // Clean up the flag
+                            if (page === 0 && pageResults.length === 0) {
+                                console.warn(`Suspicious empty result detected for ${destination} (${checkin} to ${checkout}). Treating as potential failure.`);
+                                throw new Error('Page appears valid but returned no results - possible parsing issue or incomplete page');
+                            }
+                        }
+                        
+                        // Also check if this looks like a suspicious empty result (valid page but no results)
+                        // This might indicate a parsing failure or incomplete page
+                        if (page === 0 && (!pageResults || pageResults.length === 0)) {
+                            const isSuspiciousEmpty = (
+                                html.length > 50000 && // Large page suggests it should have content
+                                (html.includes('searchresults') || html.includes('property') || html.includes('data-testid')) &&
+                                !html.includes('no results') && // Not an explicit "no results" message
+                                !html.includes('try different') // Not an explicit "try different search" message
+                            );
+                            
+                            if (isSuspiciousEmpty) {
+                                console.warn(`Suspicious empty result for ${destination} (${checkin} to ${checkout}): Large page (${html.length} chars) with Booking.com structure but 0 results. Treating as potential failure.`);
+                                // Throw error so it can be retried
+                                throw new Error('Page appears valid but returned no results - possible parsing issue or incomplete page');
+                            }
+                        }
+
+                        if (!pageResults || pageResults.length === 0) {
+                            // No more results on subsequent pages
+                            break;
+                        }
+
+                        allResults.push(...pageResults);
+
+                        // If we received fewer than a full page, there is likely no next page
+                        if (pageResults.length < pageSize) {
+                            break;
+                        }
+                    } catch (error) {
+                        console.error(`Search error on page ${page} for ${destination}:`, error);
+                        
+                        // If this is the first page and we have no results yet, check if it's a critical error
+                        if (page === 0 && allResults.length === 0) {
+                            const errorMsg = error.message || String(error);
+                            
+                            // Critical errors that indicate a failed search (not just empty results)
+                            const isCriticalError = (
+                                errorMsg.includes('blocked') ||
+                                errorMsg.includes('error page') ||
+                                errorMsg.includes('incomplete') ||
+                                errorMsg.includes('invalid') ||
+                                errorMsg.includes('timeout') ||
+                                errorMsg.includes('Network error') ||
+                                errorMsg.includes('HTTP 4') ||
+                                errorMsg.includes('HTTP 5') ||
+                                errorMsg.includes('too short') ||
+                                errorMsg.includes('No Booking.com structure') ||
+                                errorMsg.includes('possible parsing issue') || // Suspicious empty results
+                                errorMsg.includes('returned no results') // Suspicious empty results
+                            );
+                            
+                            if (isCriticalError) {
+                                // Re-throw critical errors so they're shown in UI with retry button
+                                throw error;
+                            }
+                        }
+                        
+                        // For non-critical errors or errors on subsequent pages, just break
+                        // This allows the search to continue with other pages or date combinations
+                        break;
+                    }
+                }
+
+                return allResults;
+            }
+
+            async enrichBeachInfoAndUpdateUI(results, updateDateResultsFn, updateHotelViewFn) {
+                try {
+                    // Wait for all date combinations to complete before starting enrichment
+                    const waitForAllDateCombinations = async () => {
+                        if (!window.dateStateMap || window.dateStateMap.size === 0) {
+                            console.log('No date combinations to wait for, starting location info enrichment...');
+                            return true; // No date combinations to wait for
+                        }
+                        
+                        const maxWaitTime = 300000; // 5 minutes max wait
+                        const checkInterval = 500; // Check every 500ms
+                        const startTime = Date.now();
+                        const totalCombinations = window.dateStateMap.size;
+                        
+                        console.log(`Waiting for ${totalCombinations} date combination(s) to complete before starting location info enrichment...`);
+                        
+                        while (Date.now() - startTime < maxWaitTime) {
+                            const completed = Array.from(window.dateStateMap.values()).filter(state => 
+                                state.status === 'success' || state.status === 'error'
+                            ).length;
+                            
+                            const allComplete = completed === totalCombinations;
+                            
+                            if (allComplete) {
+                                console.log(`All ${totalCombinations} date combination(s) completed, starting location info enrichment...`);
+                                return true;
+                            }
+                            
+                            // Log progress every 5 seconds
+                            if ((Date.now() - startTime) % 5000 < checkInterval) {
+                                console.log(`Waiting for date combinations... ${completed}/${totalCombinations} completed`);
+                            }
+                            
+                            await new Promise(resolve => setTimeout(resolve, checkInterval));
+                        }
+                        
+                        const completed = Array.from(window.dateStateMap.values()).filter(state => 
+                            state.status === 'success' || state.status === 'error'
+                        ).length;
+                        console.warn(`Timeout waiting for all date combinations to complete (${completed}/${totalCombinations} completed), proceeding anyway...`);
+                        return false;
+                    };
+                    
+                    const allComplete = await waitForAllDateCombinations();
+                    if (!allComplete) {
+                        console.warn('Some date combinations may still be loading, but proceeding with enrichment...');
+                    }
+                    
+                    // Use window.allSearchResults if available (it has dateKey set)
+                    const allResults = window.allSearchResults && window.allSearchResults.length > 0 
+                        ? window.allSearchResults 
+                        : results;
+                    
+                    if (!allResults || allResults.length === 0) {
+                        console.log('No results to enrich with location info');
+                        return;
+                    }
+                    
+                    // Initialize fetching set to avoid duplicate concurrent requests
+                    if (!this.beachInfoFetching) {
+                        this.beachInfoFetching = new Set();
+                    }
+                    
+                    // Group results by normalized URL to identify unique properties
+                    const uniqueUrls = new Set();
+                    const urlToResults = new Map();
+                    
+                    allResults.forEach(result => {
+                        if (result && result.url && result.normalizedUrl) {
+                            if (!uniqueUrls.has(result.normalizedUrl)) {
+                                uniqueUrls.add(result.normalizedUrl);
+                                urlToResults.set(result.normalizedUrl, []);
+                            }
+                            urlToResults.get(result.normalizedUrl).push(result);
+                        }
+                    });
+                    
+                    const urlsToFetch = Array.from(uniqueUrls);
+                    
+                    if (urlsToFetch.length === 0) {
+                        console.log('No unique properties to enrich');
+                        return;
+                    }
+                    
+                    console.log(`Enriching ${urlsToFetch.length} unique properties with location info...`);
+                    console.log('Processing properties row by row...');
+                    
+                    // Process properties one by one (row by row) sequentially
+                    for (let i = 0; i < urlsToFetch.length; i++) {
+                        const normalizedUrl = urlsToFetch[i];
+                        
+                        try {
+                            // Check if already being fetched (avoid duplicate concurrent requests)
+                            if (this.beachInfoFetching.has(normalizedUrl)) {
+                                console.log(`Location info for ${normalizedUrl} is already being fetched, waiting...`);
+                                // Wait for the existing fetch to complete
+                                while (this.beachInfoFetching.has(normalizedUrl)) {
+                                    await new Promise(resolve => setTimeout(resolve, 100));
+                                }
+                                continue;
+                            }
+                            
+                            const resultsForUrl = urlToResults.get(normalizedUrl);
+                            if (!resultsForUrl || resultsForUrl.length === 0) continue;
+                            
+                            // Use the first result's URL (they should all have the same normalized URL)
+                            const propertyUrl = resultsForUrl[0].url;
+                            if (!propertyUrl) continue;
+                            
+                            // Mark as fetching
+                            this.beachInfoFetching.add(normalizedUrl);
+                            
+                            try {
+                                console.log(`[${i + 1}/${urlsToFetch.length}] Fetching location info for: ${propertyUrl}`);
+                                const beachInfo = await this.fetchBeachInfoFromPropertyPage(propertyUrl);
+                                
+                                // Update ALL results for this property across ALL date combinations
+                                const finalBeachInfo = beachInfo || null;
+                                
+                                resultsForUrl.forEach(result => {
+                                    if (result) {
+                                        result.beachInfo = finalBeachInfo;
+                                    }
+                                });
+                                
+                                // Update window.allSearchResults for this property across all date combinations
+                                if (window.allSearchResults) {
+                                    window.allSearchResults.forEach(globalResult => {
+                                        if (globalResult.normalizedUrl === normalizedUrl) {
+                                            globalResult.beachInfo = finalBeachInfo;
+                                        }
+                                    });
+                                }
+                                
+                                if (beachInfo) {
+                                    console.log(`Location info received for ${normalizedUrl}:`, beachInfo);
+                                    if (beachInfo.locationScore !== null) {
+                                        console.log(`Updated location score for ${normalizedUrl}: ${beachInfo.locationScore}/10`);
+                                    }
+                                    if (beachInfo.closestBeachDistance) {
+                                        console.log(`Updated beach distance for ${normalizedUrl}: ${beachInfo.closestBeachName || 'Unknown'} - ${beachInfo.closestBeachDistance}`);
+                                    }
+                                    if (beachInfo.closestAirportDistance) {
+                                        console.log(`Updated airport distance for ${normalizedUrl}: ${beachInfo.closestAirportName || 'Unknown'} - ${beachInfo.closestAirportDistance}`);
+                                    }
+                                } else {
+                                    console.log(`No location info found for ${normalizedUrl}`);
+                                }
+                                
+                                // Update UI for this property across all date combinations
+                                this.updateUIForProperty(normalizedUrl, updateDateResultsFn, updateHotelViewFn);
+                                
+                            } finally {
+                                // Remove from fetching set
+                                this.beachInfoFetching.delete(normalizedUrl);
+                            }
+                        } catch (error) {
+                            console.warn(`Failed to enrich location info for ${normalizedUrl}:`, error);
+                            // Remove from fetching set on error
+                            this.beachInfoFetching.delete(normalizedUrl);
+                            // Continue with other properties even if one fails
+                        }
+                        
+                        // Small delay between properties to be respectful
+                        if (i < urlsToFetch.length - 1) {
+                            await new Promise(resolve => setTimeout(resolve, 500));
+                        }
+                    }
+                    
+                    console.log(`Location info enrichment completed for ${urlsToFetch.length} properties`);
+                } catch (error) {
+                    console.error('Error in enrichBeachInfoAndUpdateUI:', error);
+                    // Don't throw - this is background enrichment, shouldn't break the main flow
+                }
+            }
+
+            updateUIForProperty(normalizedUrl, updateDateResultsFn, updateHotelViewFn) {
+                // Update hotel view
+                if (updateHotelViewFn) {
+                    updateHotelViewFn();
+                }
+                
+                // Update all date combinations that contain this property
+                if (updateDateResultsFn && window.dateStateMap && window.allSearchResults) {
+                    // Find all date keys that have this property
+                    const dateKeysForProperty = new Set();
+                    window.allSearchResults.forEach(result => {
+                        if (result && result.normalizedUrl === normalizedUrl && result.dateKey) {
+                            dateKeysForProperty.add(result.dateKey);
+                        }
+                    });
+                    
+                    // Update each date combination
+                    dateKeysForProperty.forEach(dateKey => {
+                        const state = window.dateStateMap.get(dateKey);
+                        if (state) {
+                            // Get all results for this date key
+                            const allDateResults = window.allSearchResults.filter(r => r.dateKey === dateKey);
+                            if (allDateResults.length > 0) {
+                                updateDateResultsFn(dateKey, state.checkin, state.checkout, allDateResults, 'success', null);
+                            }
+                        }
+                    });
+                }
+            }
+
+            async enrichBeachInfo(results) {
+                try {
+                    if (!results || results.length === 0) {
+                        return; // No results to enrich
+                    }
+                    
+                    // Process in batches to avoid overwhelming the server
+                    const batchSize = 5;
+                    const uniqueUrls = new Set();
+                    const urlToResults = new Map();
+                    
+                    // Group results by URL to avoid fetching the same property multiple times
+                    results.forEach(result => {
+                        if (result && result.url && result.normalizedUrl) {
+                            if (!uniqueUrls.has(result.normalizedUrl)) {
+                                uniqueUrls.add(result.normalizedUrl);
+                                urlToResults.set(result.normalizedUrl, []);
+                            }
+                            urlToResults.get(result.normalizedUrl).push(result);
+                        }
+                    });
+                    
+                    const urlsToFetch = Array.from(uniqueUrls);
+                    if (urlsToFetch.length === 0) {
+                        return; // No unique URLs to fetch
+                    }
+                    
+                    console.log(`Enriching ${urlsToFetch.length} unique properties with beach info from property pages...`);
+                    
+                    // Process in batches
+                    for (let i = 0; i < urlsToFetch.length; i += batchSize) {
+                        const batch = urlsToFetch.slice(i, i + batchSize);
+                        const promises = batch.map(async (normalizedUrl) => {
+                            try {
+                                const resultsForUrl = urlToResults.get(normalizedUrl);
+                                if (!resultsForUrl || resultsForUrl.length === 0) return;
+                                
+                                // Use the first result's URL (they should all have the same normalized URL)
+                                const propertyUrl = resultsForUrl[0].url;
+                                if (!propertyUrl) return;
+                                
+                                const beachInfo = await this.fetchBeachInfoFromPropertyPage(propertyUrl);
+                                if (beachInfo) {
+                                    // Update all results for this property with the enriched beach info
+                                    resultsForUrl.forEach(result => {
+                                        if (result) {
+                                            result.beachInfo = beachInfo;
+                                        }
+                                    });
+                                }
+                            } catch (error) {
+                                console.warn(`Failed to enrich beach info for ${normalizedUrl}:`, error);
+                                // Continue with other properties even if one fails
+                            }
+                        });
+                        
+                        await Promise.all(promises);
+                        
+                        // Small delay between batches to be respectful
+                        if (i + batchSize < urlsToFetch.length) {
+                            await new Promise(resolve => setTimeout(resolve, 500));
+                        }
+                    }
+                    
+                    console.log(`Beach info enrichment completed for ${urlsToFetch.length} properties`);
+                } catch (error) {
+                    console.error('Error in enrichBeachInfo:', error);
+                    // Don't throw - this is background enrichment, shouldn't break the main flow
+                }
+            }
+
+            async fetchBeachInfoFromPropertyPage(propertyUrl) {
+                try {
+                    // Remove any hash from the URL - reviews data is in the main page
+                    let baseUrl = propertyUrl;
+                    if (baseUrl.includes('#')) {
+                        baseUrl = baseUrl.split('#')[0];
+                    }
+                    
+                    console.log(`Fetching property page via browser service: ${baseUrl}`);
+                    
+                    // Use browser automation service (Puppeteer)
+                    const browserServiceUrl = window.BROWSER_SERVICE_URL || 'http://localhost:8081';
+                    const serviceUrl = `${browserServiceUrl}/fetch-property?url=${encodeURIComponent(baseUrl)}`;
+                    
+                    // Use AbortController for timeout (longer timeout for browser automation)
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 seconds for browser automation
+                    
+                    const response = await fetch(serviceUrl, {
+                        signal: controller.signal
+                    });
+                    
+                    clearTimeout(timeoutId);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                    
+                    const result = await response.json();
+                    
+                    if (result.error) {
+                        console.warn(`Browser service error: ${result.error}`);
+                        return {
+                            locationScore: null,
+                            summary: result.summary || 'Error fetching page'
+                        };
+                    }
+                    
+                    console.log(`Browser service result:`, result);
+                    return {
+                        locationScore: result.locationScore,
+                        beachRating: result.beachRating,
+                        beachRatingText: result.beachRatingText,
+                        closestBeachDistance: result.closestBeachDistance,
+                        closestBeachName: result.closestBeachName,
+                        closestAirportDistance: result.closestAirportDistance,
+                        closestAirportName: result.closestAirportName,
+                        summary: result.summary || (result.locationScore !== null ? `Location: ${result.locationScore}/10` : 'No location score found')
+                    };
+                } catch (error) {
+                    if (error.name === 'AbortError') {
+                        console.warn(`Timeout fetching property page ${propertyUrl}`);
+                    } else {
+                        console.warn(`Error fetching property page ${propertyUrl}:`, error);
+                    }
+                    return {
+                        locationScore: null,
+                        summary: 'Error: ' + (error.message || 'Unknown error')
+                    };
+                }
+            }
+
+            extractBeachInfoFromPropertyPage(doc, html) {
+                const beachInfo = {
+                    locationScore: null,
+                    summary: null
+                };
+                
+                console.log(`Extracting location score. HTML length: ${html.length}`);
+                const htmlLower = html.toLowerCase();
+                
+                // More flexible check for review-subscore (handle different formats)
+                const hasReviewSubscore = (
+                    html.includes('review-subscore') || 
+                    html.includes('review_subscore') ||
+                    htmlLower.includes('review-subscore') ||
+                    htmlLower.includes('review_subscore') ||
+                    html.includes('data-testid="review-subscore"') ||
+                    html.includes("data-testid='review-subscore'") ||
+                    html.includes('data-testid=review-subscore')
+                );
+                
+                const hasLocation = htmlLower.includes('location');
+                
+                console.log(`HTML contains "review-subscore": ${hasReviewSubscore}`);
+                console.log(`HTML contains "location": ${hasLocation}`);
+                
+                // Debug: Show a sample of the HTML to see what we're working with
+                if (!hasReviewSubscore) {
+                    console.warn('⚠️ review-subscore not found in HTML!');
+                    // Try to find similar patterns
+                    const testPatterns = [
+                        'data-testid',
+                        'review',
+                        'subscore',
+                        'testid'
+                    ];
+                    for (const pattern of testPatterns) {
+                        if (htmlLower.includes(pattern)) {
+                            console.log(`✓ Found "${pattern}" in HTML`);
+                            // Show context around the first occurrence
+                            const index = htmlLower.indexOf(pattern);
+                            const context = html.substring(Math.max(0, index - 50), Math.min(html.length, index + 200));
+                            console.log(`Context: ${context.substring(0, 200)}...`);
+                        }
+                    }
+                }
+                
+                let locationScore = null;
+                
+                // PRIMARY METHOD: Search raw HTML directly - most reliable
+                // Strategy: Find "location" and extract score, even if review-subscore pattern isn't found
+                if (hasLocation) {
+                    console.log('Searching raw HTML for location score...');
+                    
+                    // Find all occurrences of "location" in the HTML
+                    const locationMatches = [];
+                    let searchIndex = 0;
+                    while ((searchIndex = htmlLower.indexOf('location', searchIndex)) !== -1) {
+                        locationMatches.push(searchIndex);
+                        searchIndex += 1;
+                    }
+                    
+                    console.log(`Found ${locationMatches.length} occurrences of "location" in HTML`);
+                    
+                    // For each "location" occurrence, try to find the score nearby
+                    for (const locIndex of locationMatches) {
+                        // Get context around "location" (500 chars before, 1000 chars after)
+                        const contextStart = Math.max(0, locIndex - 500);
+                        const contextEnd = Math.min(html.length, locIndex + 1000);
+                        const context = html.substring(contextStart, contextEnd);
+                        const contextLower = context.toLowerCase();
+                        
+                        // Check if this context contains "review-subscore" or similar patterns
+                        // OR if it's in a review/rating context (more flexible)
+                        const isReviewContext = (
+                            contextLower.includes('review-subscore') || 
+                            contextLower.includes('review_subscore') ||
+                            contextLower.includes('data-testid') ||
+                            (contextLower.includes('review') && contextLower.includes('score')) ||
+                            contextLower.includes('rating') ||
+                            contextLower.includes('subscore')
+                        );
+                        
+                        if (isReviewContext) {
+                            console.log(`Found "location" near "review-subscore" at index ${locIndex}`);
+                            
+                            // Now look for aria-hidden="true" followed by a number in this context
+                            // The score should be after "location" in the context
+                            const locationInContext = contextLower.indexOf('location');
+                            const afterLocation = context.substring(locationInContext + 8);
+                            
+                            // Try multiple patterns for aria-hidden
+                            const ariaPatterns = [
+                                /aria-hidden=["']true["'][^>]*>(\d+\.?\d*)/i,
+                                /aria-hidden\s*=\s*["']true["'][^>]*>(\d+\.?\d*)/i,
+                                /aria-hidden=["']true["'][^>]*>\s*(\d+\.?\d*)/i
+                            ];
+                            
+                            for (const pattern of ariaPatterns) {
+                                const scoreMatch = afterLocation.match(pattern);
+                                if (scoreMatch && scoreMatch[1]) {
+                                    const score = parseFloat(scoreMatch[1]);
+                                    if (score >= 1 && score <= 10) {
+                                        locationScore = score;
+                                        console.log(`✓ Extracted location score: ${locationScore}`);
+                                        break;
+                                    }
+                                }
+                            }
+                            
+                            // If not found via aria-hidden, look for any number after "location"
+                            if (locationScore === null) {
+                                // Find numbers in the context after "location"
+                                const numbers = afterLocation.match(/(\d+\.?\d*)/g);
+                                if (numbers) {
+                                    for (const numStr of numbers) {
+                                        const score = parseFloat(numStr);
+                                        if (score >= 1 && score <= 10) {
+                                            // Check if this number appears in an element (not just text)
+                                            const numIndex = afterLocation.indexOf(numStr);
+                                            const beforeNum = afterLocation.substring(Math.max(0, numIndex - 50), numIndex);
+                                            
+                                            // Look for HTML tags around this number (indicates it's in an element)
+                                            if (beforeNum.includes('>') || beforeNum.includes('<')) {
+                                                locationScore = score;
+                                                console.log(`✓ Extracted location score (number in element): ${locationScore}`);
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            if (locationScore !== null) break;
+                        } else {
+                            // Even if not in review context, try to find score after "location"
+                            // This handles cases where the HTML structure is different
+                            const locationInContext = contextLower.indexOf('location');
+                            const afterLocation = context.substring(locationInContext + 8);
+                            
+                            // Look for aria-hidden with numbers
+                            const ariaPatterns = [
+                                /aria-hidden=["']true["'][^>]*>(\d+\.?\d*)/i,
+                                /aria-hidden\s*=\s*["']true["'][^>]*>(\d+\.?\d*)/i
+                            ];
+                            
+                            for (const pattern of ariaPatterns) {
+                                const scoreMatch = afterLocation.match(pattern);
+                                if (scoreMatch && scoreMatch[1]) {
+                                    const score = parseFloat(scoreMatch[1]);
+                                    if (score >= 1 && score <= 10) {
+                                        locationScore = score;
+                                        console.log(`✓ Extracted location score (without review context): ${locationScore}`);
+                                        break;
+                                    }
+                                }
+                            }
+                            
+                            if (locationScore !== null) break;
+                        }
+                    }
+                }
+                
+                // FALLBACK: Try DOM querySelector (in case HTML structure is different)
+                if (locationScore === null) {
+                    let reviewSubscores = doc.querySelectorAll('div[data-testid="review-subscore"]');
+                    if (reviewSubscores.length === 0) {
+                        reviewSubscores = doc.querySelectorAll('[data-testid="review-subscore"]');
+                    }
+                    console.log(`DOM querySelector found ${reviewSubscores.length} review-subscore elements`);
+                    
+                    // Look for the one that contains "location"
+                    for (const subscoreDiv of reviewSubscores) {
+                        const text = (subscoreDiv.textContent || '').toLowerCase();
+                        
+                        // Check if this div contains the word "location"
+                        if (text.includes('location')) {
+                            console.log(`Found location subscore div`);
+                            
+                            // Based on Booking.com structure from README:
+                            // The score is in a sibling div with aria-hidden="true"
+                            // Structure: review-subscore > div > div > (div with Location) + (div with score)
+                            // The score div contains just the number like "9.2"
+                            
+                            // First, try to find the div with aria-hidden="true" that contains ONLY a number
+                            const ariaHiddenElements = subscoreDiv.querySelectorAll('[aria-hidden="true"]');
+                            for (const el of ariaHiddenElements) {
+                                const elText = (el.textContent || '').trim();
+                                // Make sure it doesn't contain "location" (should be just the number)
+                                if (elText.toLowerCase().includes('location')) continue;
+                                
+                                // Check if it's just a number (the score)
+                                const scoreMatch = elText.match(/^(\d+\.?\d*)$/);
+                                if (scoreMatch) {
+                                    const score = parseFloat(scoreMatch[1]);
+                                    if (score >= 1 && score <= 10) {
+                                        locationScore = score;
+                                        console.log(`Extracted location score from aria-hidden element: ${locationScore}`);
+                                        break;
+                                    }
+                                }
+                            }
+                            
+                            // If not found via aria-hidden, look for sibling divs
+                            // The structure has two sibling divs with class "ca9d921c46"
+                            // One contains "Location", the other contains the score
+                            if (locationScore === null) {
+                                // Find all direct child divs that might contain the score
+                                // Look for divs that don't contain "location" but contain a number
+                                const allDivs = subscoreDiv.querySelectorAll('div');
+                                for (const div of allDivs) {
+                                    const divText = (div.textContent || '').toLowerCase();
+                                    // Skip if it contains "location"
+                                    if (divText.includes('location')) continue;
+                                    
+                                    // Check if this div contains just a number (the score)
+                                    const scoreMatch = divText.trim().match(/^(\d+\.?\d*)$/);
+                                    if (scoreMatch) {
+                                        const score = parseFloat(scoreMatch[1]);
+                                        if (score >= 1 && score <= 10) {
+                                            locationScore = score;
+                                            console.log(`Extracted location score from sibling div: ${locationScore}`);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            // If still not found, check all child elements for numbers
+                            if (locationScore === null) {
+                                const allElements = subscoreDiv.querySelectorAll('*');
+                                for (const el of allElements) {
+                                    const elText = (el.textContent || '').trim();
+                                    // Skip if it contains "location"
+                                    if (elText.toLowerCase().includes('location')) continue;
+                                    
+                                    // Look for a number that could be a score (1-10, possibly decimal)
+                                    const scoreMatch = elText.match(/^(\d+\.?\d*)$/);
+                                    if (scoreMatch) {
+                                        const score = parseFloat(scoreMatch[1]);
+                                        if (score >= 1 && score <= 10) {
+                                            locationScore = score;
+                                            console.log(`Extracted location score from element: ${locationScore} (element text: "${elText}")`);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            // Last resort: extract any number from the div's text content (excluding "location")
+                            if (locationScore === null) {
+                                const allText = subscoreDiv.textContent || '';
+                                const numbers = allText.match(/(\d+\.?\d*)/g);
+                                if (numbers) {
+                                    for (const numStr of numbers) {
+                                        const score = parseFloat(numStr);
+                                        if (score >= 1 && score <= 10) {
+                                            locationScore = score;
+                                            console.log(`Extracted location score from div text: ${locationScore}`);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            if (locationScore !== null) break;
+                        }
+                    }
+                }
+                
+                // FINAL FALLBACK: Aggressive search - find "location" anywhere, then find nearest aria-hidden number
+                if (locationScore === null && hasLocation) {
+                    console.log('Trying final fallback: searching entire HTML for location + aria-hidden pattern...');
+                    
+                    // Find all "location" occurrences
+                    const allLocationIndices = [];
+                    let idx = 0;
+                    while ((idx = htmlLower.indexOf('location', idx)) !== -1) {
+                        allLocationIndices.push(idx);
+                        idx += 1;
+                    }
+                    
+                    // For each location, search for aria-hidden="true">number within 500 chars
+                    for (const locIdx of allLocationIndices) {
+                        const searchWindow = html.substring(locIdx, Math.min(html.length, locIdx + 500));
+                        const ariaMatch = searchWindow.match(/aria-hidden=["']true["'][^>]*>(\d+\.?\d*)/i);
+                        if (ariaMatch && ariaMatch[1]) {
+                            const score = parseFloat(ariaMatch[1]);
+                            if (score >= 1 && score <= 10) {
+                                locationScore = score;
+                                console.log(`✓ Final fallback extracted location score: ${locationScore}`);
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                beachInfo.locationScore = locationScore;
+                
+                // Generate summary
+                if (locationScore !== null) {
+                    beachInfo.summary = `Location: ${locationScore}/10`;
+                } else {
+                    beachInfo.summary = 'No location score';
+                    // Log what we found for debugging
+                    console.warn('Could not extract location score. HTML sample:', html.substring(0, 1000));
+                }
+                
+                return beachInfo;
+            }
+
+            validateSearchResultsPage(html, destination, checkin, checkout) {
+                // Only reject pages that are clearly errors - be lenient otherwise
+                // This prevents false negatives where valid pages are rejected
+                
+                // Extremely short responses are likely errors
+                if (html.length < 500) {
+                    return {
+                        isValid: false,
+                        reason: 'Response too short (< 500 chars) - likely error page'
+                    };
+                }
+                
+                // Suspiciously small pages (likely incomplete, blocked, or redirected)
+                // Normal Booking.com search results pages are typically 50,000+ characters
+                if (html.length < 10000) {
+                    const htmlLower = html.toLowerCase();
+                    
+                    // Check for blocking/error indicators
+                    if (htmlLower.includes('blocked') || 
+                        htmlLower.includes('access denied') ||
+                        htmlLower.includes('forbidden') ||
+                        htmlLower.includes('captcha') ||
+                        htmlLower.includes('cloudflare') ||
+                        htmlLower.includes('checking your browser') ||
+                        htmlLower.includes('please wait')) {
+                        return {
+                            isValid: false,
+                            reason: `Page appears to be blocked or requires verification (${html.length} chars)`
+                        };
+                    }
+                    
+                    // Check if it's a redirect or error page
+                    if (htmlLower.includes('redirect') || 
+                        htmlLower.includes('error page') ||
+                        htmlLower.includes('not found') ||
+                        html.length < 2000) {
+                        return {
+                            isValid: false,
+                            reason: `Page appears to be incomplete or redirected (${html.length} chars)`
+                        };
+                    }
+                    
+                    // If it's small but doesn't have explicit error indicators, 
+                    // it might still be incomplete - log a warning but don't reject
+                    console.warn(`[WARNING] Page is suspiciously small (${html.length} chars) but no explicit error detected. This might indicate incomplete loading.`);
+                }
+
+                const htmlLower = html.toLowerCase();
+                
+                // Only flag explicit error messages (not just the word "error" which might be in normal text)
+                const hasExplicitError = (
+                    htmlLower.includes('access denied') ||
+                    htmlLower.includes('you have been blocked') ||
+                    htmlLower.includes('captcha') ||
+                    htmlLower.includes('cloudflare') && htmlLower.includes('blocked') ||
+                    htmlLower.includes('rate limit exceeded') ||
+                    htmlLower.includes('too many requests') ||
+                    htmlLower.includes('403 forbidden') ||
+                    htmlLower.includes('404 not found') ||
+                    (htmlLower.includes('error occurred') && html.length < 3000 && !html.includes('booking.com'))
+                );
+
+                if (hasExplicitError) {
+                    return {
+                        isValid: false,
+                        reason: 'Page contains explicit error indicators'
+                    };
+                }
+
+                // Be very lenient - if it's not clearly an error, accept it
+                // Even if we can't parse it perfectly, it might still have valid data
+                // The parsing function will handle empty results gracefully
+                return {
+                    isValid: true,
+                    reason: null
+                };
+            }
+
+            parseResults(html, destination, checkin, checkout, preferences) {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const results = [];
+
+                // Try multiple selector patterns (in order of preference)
+                let cards = doc.querySelectorAll('div[data-testid="property-card"]');
+                if (cards.length === 0) {
+                    cards = doc.querySelectorAll('div[data-testid="property-card-container"]');
+                }
+                if (cards.length === 0) {
+                    cards = doc.querySelectorAll('div.c-sr_property-card');
+                }
+                if (cards.length === 0) {
+                    cards = doc.querySelectorAll('div.sr_item');
+                }
+                if (cards.length === 0) {
+                    // Try more generic selectors
+                    cards = doc.querySelectorAll('[data-testid*="property"]');
+                }
+                if (cards.length === 0) {
+                    // Last resort: look for any div with hotel-related classes
+                    cards = doc.querySelectorAll('div[class*="hotel"], div[class*="property"], div[class*="sr_item"]');
+                }
+                
+                // If still no cards, check if this is a valid empty results page or a failed/incomplete page
+                if (cards.length === 0) {
+                    // Debug: Log what selectors we tried and what we found
+                    console.log(`[DEBUG] No property cards found. HTML length: ${html.length}`);
+                    console.log(`[DEBUG] Checking for property-card:`, doc.querySelectorAll('div[data-testid="property-card"]').length);
+                    console.log(`[DEBUG] Checking for property-card-container:`, doc.querySelectorAll('div[data-testid="property-card-container"]').length);
+                    console.log(`[DEBUG] Checking for c-sr_property-card:`, doc.querySelectorAll('div.c-sr_property-card').length);
+                    console.log(`[DEBUG] Checking for sr_item:`, doc.querySelectorAll('div.sr_item').length);
+                    console.log(`[DEBUG] Checking for any data-testid with property:`, doc.querySelectorAll('[data-testid*="property"]').length);
+                    
+                    // Check if HTML contains property-related content that suggests results should be there
+                    const hasPropertyContent = (
+                        html.includes('property-card') ||
+                        html.includes('data-testid="property') ||
+                        html.includes('sr_item') ||
+                        html.includes('c-sr_property-card')
+                    );
+                    
+                    // Check if page has search results structure (indicating it's a valid empty results page)
+                    const hasSearchResultsStructure = (
+                        html.includes('searchresults') ||
+                        html.includes('data-testid') ||
+                        html.includes('sr_item') ||
+                        html.includes('property-card') ||
+                        html.includes('no results') ||
+                        html.includes('no properties') ||
+                        html.includes('try different') ||
+                        html.includes('adjust your search')
+                    );
+
+                    // Check if page looks like it should have had results but doesn't
+                    const looksLikeIncompletePage = (
+                        html.length > 30000 && // Large page
+                        hasSearchResultsStructure && // Has Booking.com structure
+                        !html.includes('no results') && // Not explicitly saying "no results"
+                        !html.includes('no properties') && // Not explicitly saying "no properties"
+                        (html.includes('property') || html.includes('hotel')) // Mentions properties/hotels
+                    );
+
+                    if (looksLikeIncompletePage || (hasPropertyContent && !hasSearchResultsStructure)) {
+                        // This looks like it should have had results but parsing found nothing
+                        // Mark this as a potential failure
+                        console.warn(`[DEBUG] Suspicious: Page has structure suggesting results should exist but found 0 cards. HTML length: ${html.length}. This might indicate a parsing failure or JavaScript-rendered content.`);
+                        // Return empty but mark it somehow - we'll check this in the caller
+                        results._suspiciousEmpty = true;
+                        return results;
+                    }
+
+                    if (hasSearchResultsStructure) {
+                        // This is a valid empty results page
+                        console.log(`Valid empty results page for ${destination} (${checkin} to ${checkout}). HTML length: ${html.length}`);
+                        return results; // Return empty array - this is a valid empty result
+                    } else {
+                        // This might be an incomplete or malformed page
+                        console.warn(`No property cards and no search results structure found for ${destination} (${checkin} to ${checkout}). HTML length: ${html.length}. This might indicate an incomplete page.`);
+                        results._suspiciousEmpty = true;
+                        return results;
+                    }
+                }
+
+                console.log(`Found ${cards.length} property cards to parse for ${checkin} to ${checkout}`);
+                
+                let skippedCount = 0;
+                let skippedReasons = { noTitle: 0, noLink: 0, noTitleText: 0, filter: 0, error: 0 };
+                
+                cards.forEach((card, index) => {
+                    try {
+                        // Try multiple selectors for title
+                        let titleEl = card.querySelector('div[data-testid="title"]');
+                        if (!titleEl) {
+                            titleEl = card.querySelector('h3[data-testid="title"]');
+                        }
+                        if (!titleEl) {
+                            titleEl = card.querySelector('a[data-testid="title-link"]');
+                        }
+                        if (!titleEl) {
+                            titleEl = card.querySelector('a.sr-hotel__name');
+                        }
+                        if (!titleEl) {
+                            titleEl = card.querySelector('span.sr-hotel__name');
+                        }
+                        if (!titleEl) {
+                            titleEl = card.querySelector('h3 a, h2 a, h4 a');
+                        }
+                        if (!titleEl) {
+                            titleEl = card.querySelector('[data-testid*="title"]');
+                        }
+
+                        // Try multiple ways to find the link
+                        let linkEl = card.querySelector('a[data-testid="title-link"]');
+                        if (!linkEl) {
+                            linkEl = card.querySelector('a.sr-hotel__name');
+                        }
+                        if (!linkEl) {
+                            linkEl = card.querySelector('a[href*="/hotel/"]');
+                        }
+                        if (!linkEl) {
+                            linkEl = card.querySelector('a[href*="/apartment/"]');
+                        }
+                        if (!linkEl) {
+                            linkEl = card.querySelector('a[href*="/villa/"]');
+                        }
+                        if (!linkEl) {
+                            // Try to find any link in the card that looks like a property link
+                            const allLinks = card.querySelectorAll('a[href]');
+                            for (const link of allLinks) {
+                                const href = link.getAttribute('href') || '';
+                                if (href.includes('/hotel/') || href.includes('/apartment/') || href.includes('/villa/') || href.includes('/resort/')) {
+                                    linkEl = link;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!linkEl) {
+                            // Last resort: use the title element if it's a link
+                            if (titleEl && titleEl.tagName === 'A') {
+                                linkEl = titleEl;
+                            }
+                        }
+                        if (!linkEl) {
+                            // Final fallback: any link in the card
+                            linkEl = card.querySelector('a[href]');
+                        }
+
+                        // Extract title - try from titleEl first, then from linkEl
+                        let title = '';
+                        if (titleEl) {
+                            title = titleEl.textContent.trim();
+                        } else if (linkEl) {
+                            // Use link text as title if no title element found
+                            title = linkEl.textContent.trim();
+                        }
+                        
+                        // Clean up title text (Booking often appends "Opens in new window")
+                        title = title.replace(/Opens in new window/gi, '').trim();
+                        
+                        // If still no title, skip this card
+                        if (!title) {
+                            skippedCount++;
+                            skippedReasons.noTitleText++;
+                            return;
+                        }
+                        
+                        // If no link, skip this card (we need URL for grouping)
+                        if (!linkEl) {
+                            skippedCount++;
+                            skippedReasons.noLink++;
+                            return;
+                        }
+
+                        let url = linkEl.getAttribute('href') || '';
+                        if (url.startsWith('/')) {
+                            url = `https://www.booking.com${url}`;
+                        } else if (url && !url.startsWith('http')) {
+                            url = `https://www.booking.com/${url}`;
+                        }
+                        
+                        // Normalize URL to base property URL (remove query parameters for grouping)
+                        const normalizedUrl = this.normalizePropertyUrl(url);
+
+                        // Extract price
+                        const priceEl = card.querySelector(
+                            'span[data-testid="price-and-discounted-price"], ' +
+                            'div[data-testid="price-and-discounted-price"], ' +
+                            'span.bui-price-display__value, ' +
+                            'div.bui-price-display__value, ' +
+                            'strong.price'
+                        );
+                        const price = priceEl ? priceEl.textContent.trim() : null;
+
+                        // Extract rating
+                        const ratingEl = card.querySelector(
+                            'div[data-testid="review-score"], ' +
+                            'div[data-testid="rating-score"], ' +
+                            'div.bui-review-score__badge, ' +
+                            'div.sr-review-score'
+                        );
+                        const rating = ratingEl ? ratingEl.textContent.trim() : null;
+                        
+                        // Extract numeric review score from rating text
+                        let reviewScore = null;
+                        if (rating) {
+                            // Try to extract numeric score (e.g., "8.5" from "Scored 8.5" or "8.5Excellent")
+                            const scoreMatch = rating.match(/(\d+\.?\d*)/);
+                            if (scoreMatch) {
+                                reviewScore = parseFloat(scoreMatch[1]);
+                            }
+                        }
+                        
+                        // Filter by minimum review score if specified
+                        if (preferences.minReviewScore !== null && preferences.minReviewScore !== undefined) {
+                            if (reviewScore === null || reviewScore < preferences.minReviewScore) {
+                                skippedCount++;
+                                skippedReasons.filter++;
+                                return;
+                            }
+                        }
+
+                        // Extract property type using comprehensive algorithm
+                        const propertyType = this.extractPropertyType(url, title, card);
+                        
+                        // Filter by property type if specified (OR logic - match any selected type)
+                        if (preferences.propertyType && preferences.propertyType.length > 0) {
+                            const matchesAny = preferences.propertyType.some(requestedType => 
+                                this.matchesPropertyType(propertyType, requestedType)
+                            );
+                            if (!matchesAny) {
+                                skippedCount++;
+                                skippedReasons.filter++;
+                                return; // Exclude if doesn't match any selected type
+                            }
+                        }
+
+                        // Extract basic beach information from card (will be enriched later from property page)
+                        const beachInfo = this.extractBeachInfo(card);
+
+                        results.push({
+                            provider: 'booking',
+                            destination: destination,
+                            title: title,
+                            url: url,
+                            normalizedUrl: normalizedUrl,
+                            price: price,
+                            rating: rating,
+                            reviewScore: reviewScore,
+                            checkin: checkin,
+                            checkout: checkout,
+                            beachInfo: beachInfo,
+                        });
+                    } catch (error) {
+                        skippedCount++;
+                        skippedReasons.error++;
+                        console.error(`Error parsing card ${index}:`, error);
+                    }
+                });
+
+                // Log summary
+                const parsedCount = results.length;
+                const totalCards = cards.length;
+                if (skippedCount > 0) {
+                    console.log(`Parsed ${parsedCount} results from ${totalCards} cards (${skippedCount} skipped: ${JSON.stringify(skippedReasons)})`);
+                } else {
+                    console.log(`Parsed ${parsedCount} results from ${totalCards} cards`);
+                }
+                
+                // If we found cards but parsed 0 results, this might indicate a parsing issue
+                if (totalCards > 0 && parsedCount === 0 && skippedCount === 0) {
+                    console.warn(`Warning: Found ${totalCards} cards but parsed 0 results. This might indicate a parsing issue.`);
+                }
+                
+                return results;
+            }
+
+            extractPropertyType(url, title, card) {
+                // Simplified and robust: classify only as 'hotel' or 'house'
+                // based on URL and strong textual signals. We no longer try
+                // to infer from star/award tooltips, as that's too brittle.
+                const urlLower = (url || '').toLowerCase();
+                const titleLower = (title || '').toLowerCase();
+                let cardText = '';
+                if (card) {
+                    cardText = card.textContent.toLowerCase();
+                }
+                const allText = `${titleLower} ${urlLower} ${cardText}`;
+
+                // 1) Clear house-type URL patterns
+                if (
+                    urlLower.includes('/apartment/') ||
+                    urlLower.includes('/apartments/') ||
+                    urlLower.includes('/villa/') ||
+                    urlLower.includes('/villas/') ||
+                    urlLower.includes('/holiday-home/') ||
+                    urlLower.includes('/holiday-house/') ||
+                    urlLower.includes('/holidayhome/')
+                ) {
+                    return 'house';
+                }
+
+                // 2) Strong house indicators in title / card text
+                const houseIndicators = [
+                    'apartment',
+                    'apartamento',
+                    'apartamentos',
+                    'villa',
+                    'villas',
+                    'holiday home',
+                    'holiday house',
+                    'holiday cottage',
+                    'cottage',
+                    'chalet',
+                    'bungalow',
+                    'entire place',
+                    'entire apartment',
+                    'entire villa',
+                    'home',
+                    'house'
+                ];
+
+                for (const word of houseIndicators) {
+                    if (allText.includes(word)) {
+                        return 'house';
+                    }
+                }
+
+                // 3) Fallback: anything else is treated as hotel
+                return 'hotel';
+            }
+
+            normalizePropertyUrl(url) {
+                try {
+                    const urlObj = new URL(url);
+                    // Extract base path (e.g., /hotel/es/property-name.html)
+                    // Remove query parameters and hash
+                    const baseUrl = `${urlObj.protocol}//${urlObj.host}${urlObj.pathname}`;
+                    return baseUrl;
+                } catch (e) {
+                    // If URL parsing fails, try to extract base URL manually
+                    try {
+                        const match = url.match(/^(https?:\/\/[^\/]+\/[^?]+)/);
+                        if (match) {
+                            return match[1];
+                        }
+                    } catch (e2) {
+                        // Last resort: remove query string
+                        return url.split('?')[0].split('#')[0];
+                    }
+                    return url.split('?')[0].split('#')[0];
+                }
+            }
+
+            extractBeachInfo(card) {
+                if (!card) return null;
+                
+                const cardText = card.textContent || '';
+                const cardTextLower = cardText.toLowerCase();
+                const beachInfo = {
+                    distance: null,
+                    locationScore: null,
+                    beachMentions: 0,
+                    beachHighlights: [],
+                    beachfront: false,
+                    summary: null
+                };
+                
+                // 1. Extract distance to beach
+                // Look for patterns like "0.2 km from beach", "500 m from beach", "beachfront", "on the beach"
+                const distancePatterns = [
+                    /(\d+(?:\.\d+)?)\s*(?:km|kilometer|kilometre|m|meter|metre|mi|mile)\s*(?:from|to|away from)?\s*(?:the\s+)?beach/i,
+                    /beachfront/i,
+                    /on\s+(?:the\s+)?beach/i,
+                    /beach\s+(?:front|side|access)/i,
+                    /(\d+(?:\.\d+)?)\s*(?:min|minute|min\.)\s*(?:walk|walking)?\s*(?:to|from)?\s*(?:the\s+)?beach/i
+                ];
+                
+                for (const pattern of distancePatterns) {
+                    const match = cardText.match(pattern);
+                    if (match) {
+                        if (match[0].toLowerCase().includes('beachfront') || 
+                            match[0].toLowerCase().includes('on the beach') ||
+                            match[0].toLowerCase().includes('beach front')) {
+                            beachInfo.distance = 'Beachfront';
+                            beachInfo.beachfront = true;
+                        } else if (match[1]) {
+                            beachInfo.distance = match[0].trim();
+                        }
+                        break;
+                    }
+                }
+                
+                // 2. Extract location review score
+                // Look for location score in badges or review sections
+                const locationScoreEl = card.querySelector(
+                    '[data-testid*="location"], ' +
+                    '[class*="location"][class*="score"], ' +
+                    '[class*="location"][class*="rating"], ' +
+                    'span[class*="location-score"]'
+                );
+                if (locationScoreEl) {
+                    const locationText = locationScoreEl.textContent || '';
+                    const scoreMatch = locationText.match(/(\d+\.?\d*)/);
+                    if (scoreMatch) {
+                        beachInfo.locationScore = parseFloat(scoreMatch[1]);
+                    }
+                }
+                
+                // 3. Count beach mentions in the card
+                const beachWords = ['beach', 'beachfront', 'seaside', 'seashore', 'coast', 'coastal', 'shore', 'waterfront'];
+                let beachMentions = 0;
+                for (const word of beachWords) {
+                    const regex = new RegExp(`\\b${word}\\b`, 'gi');
+                    const matches = cardText.match(regex);
+                    if (matches) {
+                        beachMentions += matches.length;
+                    }
+                }
+                beachInfo.beachMentions = beachMentions;
+                
+                // 4. Extract beach-related highlights/badges
+                const highlightEls = card.querySelectorAll(
+                    '[data-testid*="badge"], ' +
+                    '[data-testid*="highlight"], ' +
+                    '[class*="badge"], ' +
+                    '[class*="highlight"], ' +
+                    '[class*="facility"], ' +
+                    'span[class*="facility"]'
+                );
+                
+                const beachHighlightKeywords = ['beach', 'beachfront', 'seaside', 'coast', 'coastal', 'shore', 'waterfront', 'sea view', 'ocean view'];
+                highlightEls.forEach(el => {
+                    const text = (el.textContent || '').toLowerCase();
+                    for (const keyword of beachHighlightKeywords) {
+                        if (text.includes(keyword)) {
+                            beachInfo.beachHighlights.push(el.textContent.trim());
+                            break;
+                        }
+                    }
+                });
+                
+                // 5. Check for beachfront indicators in specific elements
+                const locationEl = card.querySelector(
+                    '[data-testid*="location"], ' +
+                    '[class*="location"], ' +
+                    '[class*="distance"], ' +
+                    'div[class*="sr_card_address"]'
+                );
+                if (locationEl) {
+                    const locationText = locationEl.textContent || '';
+                    if (locationText.toLowerCase().includes('beachfront') || 
+                        locationText.toLowerCase().includes('on the beach')) {
+                        beachInfo.beachfront = true;
+                        if (!beachInfo.distance) {
+                            beachInfo.distance = 'Beachfront';
+                        }
+                    }
+                }
+                
+                // 6. Generate summary
+                const summaryParts = [];
+                if (beachInfo.distance) {
+                    summaryParts.push(beachInfo.distance);
+                }
+                if (beachInfo.locationScore !== null) {
+                    summaryParts.push(`Location: ${beachInfo.locationScore}/10`);
+                }
+                if (beachInfo.beachMentions > 0) {
+                    summaryParts.push(`${beachInfo.beachMentions} beach mention${beachInfo.beachMentions > 1 ? 's' : ''}`);
+                }
+                if (beachInfo.beachHighlights.length > 0) {
+                    summaryParts.push(`${beachInfo.beachHighlights.length} highlight${beachInfo.beachHighlights.length > 1 ? 's' : ''}`);
+                }
+                if (summaryParts.length > 0) {
+                    beachInfo.summary = summaryParts.join(' • ');
+                } else {
+                    beachInfo.summary = 'No beach info';
+                }
+                
+                return beachInfo;
+            }
+
+            matchesPropertyType(extractedType, requestedType) {
+                if (!extractedType) return false;
+
+                const normalize = (t) => {
+                    const v = (t || '').toLowerCase().trim();
+                    if (!v) return 'hotel';
+
+                    // Map various detailed types into the two buckets: hotel vs house
+                    if (
+                        v === 'hotel' ||
+                        v === 'resort'
+                    ) {
+                        return 'hotel';
+                    }
+
+                    if (
+                        v === 'house' ||
+                        v === 'apartment' ||
+                        v === 'villa' ||
+                        v === 'guesthouse' ||
+                        v === 'bed and breakfast' ||
+                        v === 'holiday home' ||
+                        v === 'holiday house' ||
+                        v === 'cottage' ||
+                        v === 'chalet' ||
+                        v === 'bungalow'
+                    ) {
+                        return 'house';
+                    }
+
+                    // Unknown detailed type: default to hotel bucket
+                    return 'hotel';
+                };
+
+                const extracted = normalize(extractedType);
+                const requested = normalize(requestedType);
+
+                return extracted === requested;
+            }
+        }
+
+        // Initialize searcher
+        const searcher = new BookingSearcher();
+
+        // Handle form submission
+        document.getElementById('searchForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const form = e.target;
+            const button = document.getElementById('searchButton');
+            const loading = document.getElementById('loading');
+            const error = document.getElementById('error');
+            const resultsDiv = document.getElementById('results');
+            const statsDiv = document.getElementById('stats');
+
+            // Hide previous results and errors
+            error.style.display = 'none';
+            resultsDiv.innerHTML = '';
+            statsDiv.style.display = 'none';
+            
+            // Initialize window.allSearchResults if it doesn't exist
+            if (!window.allSearchResults) {
+                window.allSearchResults = [];
+            } else {
+                window.allSearchResults = []; // Clear previous results for hotel view
+            }
+            
+            // Initialize window.dateStateMap if it doesn't exist
+            if (!window.dateStateMap) {
+                window.dateStateMap = new Map();
+            }
+
+            // Show loading
+            button.disabled = true;
+            loading.style.display = 'block';
+            
+            // Reset cancellation flag for new search
+            window.searchCancelled = false;
+
+            try {
+                // Get form values
+                const destinations = document.getElementById('destinations').value
+                    .split(',')
+                    .map(d => d.trim())
+                    .filter(d => d);
+
+                const closeToCenter = document.getElementById('closeToCenter').value;
+                const maxTransfer = document.getElementById('maxTransfer').value;
+                const bathrooms = document.getElementById('bathrooms').value;
+                const minStayLength = document.getElementById('minStayLength').value;
+                const maxStayLength = document.getElementById('maxStayLength').value;
+                const childAgesInput = document.getElementById('childAges').value.trim();
+                const parsedChildAges = childAgesInput
+                    .split(',')
+                    .map(a => a.trim())
+                    .filter(a => a !== '')
+                    .map(a => parseInt(a, 10))
+                    .filter(a => !isNaN(a) && a >= 0 && a <= 17);
+                
+                // Infer number of children from childAges: 0 if empty, otherwise count comma-separated values
+                // This is equivalent to "number of commas + 1" for valid inputs
+                const numberOfChildren = childAgesInput === '' ? 0 : parsedChildAges.length;
+
+                // Get selected property types (checkboxes - OR logic, hotel vs house)
+                const selectedPropertyTypes = [];
+                if (document.getElementById('propertyTypeHotel').checked) selectedPropertyTypes.push('hotel');
+                if (document.getElementById('propertyTypeHouse').checked) selectedPropertyTypes.push('house');
+                
+                const minReviewScore = document.getElementById('minReviewScore').value;
+
+                const criteria = {
+                    destinations: destinations,
+                    checkin: document.getElementById('checkin').value,
+                    checkout: document.getElementById('checkout').value,
+                    checkinFlex: {
+                        daysBefore: parseInt(document.getElementById('checkinFlexBefore').value) || 0,
+                        daysAfter: parseInt(document.getElementById('checkinFlexAfter').value) || 0,
+                    },
+                    checkoutFlex: {
+                        daysBefore: parseInt(document.getElementById('checkoutFlexBefore').value) || 0,
+                        daysAfter: parseInt(document.getElementById('checkoutFlexAfter').value) || 0,
+                    },
+                    minStayLength: minStayLength ? parseInt(minStayLength) : null,
+                    maxStayLength: maxStayLength ? parseInt(maxStayLength) : null,
+                    occupancy: {
+                        adults: parseInt(document.getElementById('adults').value),
+                        children: numberOfChildren,
+                        rooms: parseInt(document.getElementById('rooms').value),
+                    },
+                    childAges: parsedChildAges,
+                    preferences: {
+                        propertyType: selectedPropertyTypes.length > 0 ? selectedPropertyTypes : null,
+                        minReviewScore: minReviewScore ? parseFloat(minReviewScore) : null,
+                        freeCancellation: document.getElementById('freeCancellation').checked,
+                        pool: document.getElementById('pool').checked,
+                        beachfront: document.getElementById('beachfront').checked,
+                        niceBeach: document.getElementById('niceBeach').checked,
+                        allInclusive: document.getElementById('allInclusive').checked,
+                        largeRoom: document.getElementById('largeRoom').checked,
+                        lift: document.getElementById('lift').checked,
+                        groundFloor: document.getElementById('groundFloor').checked,
+                        closeToCenterMinutes: closeToCenter ? parseInt(closeToCenter) : null,
+                        maxTransferMinutes: maxTransfer ? parseInt(maxTransfer) : null,
+                        bathrooms: bathrooms ? parseInt(bathrooms) : null,
+                    },
+                };
+
+                // Calculate total searches for progress (before filtering by stay length)
+                const checkinRange = criteria.checkinFlex.daysBefore + criteria.checkinFlex.daysAfter + 1;
+                const checkoutRange = criteria.checkoutFlex.daysBefore + criteria.checkoutFlex.daysAfter + 1;
+                const maxPossibleSearches = criteria.destinations.length * checkinRange * checkoutRange;
+                
+                // Generate date combinations to get actual count after filtering
+                const dateCombinations = searcher.generateDateCombinations(
+                    criteria.checkin,
+                    criteria.checkout,
+                    criteria.checkinFlex,
+                    criteria.checkoutFlex,
+                    criteria.minStayLength,
+                    criteria.maxStayLength
+                );
+                const actualSearches = criteria.destinations.length * dateCombinations.length;
+                
+                // Update loading text
+                const loadingText = document.getElementById('loadingText');
+                if (actualSearches > 1) {
+                    let message = `Searching ${actualSearches} date combination${actualSearches > 1 ? 's' : ''}...`;
+                    if (actualSearches < maxPossibleSearches) {
+                        message += ` (${maxPossibleSearches - actualSearches} filtered by stay length)`;
+                    }
+                    loadingText.textContent = message;
+                }
+
+                // Pre-render table with all date combinations
+                const formatDate = (dateStr) => {
+                    const date = new Date(dateStr);
+                    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                };
+
+                // Sort date combinations
+                const sortedDateCombinations = [...dateCombinations].sort((a, b) => {
+                    const dateA = new Date(a[0]);
+                    const dateB = new Date(b[0]);
+                    return dateA - dateB;
+                });
+
+                // Build tabs and initial table structure
+                let tableHtml = `
+                    <div id="global-status-bar" style="background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span id="global-status-text" style="font-weight: 500; color: #374151;">Loading...</span>
+                            <span id="global-status-percentage" style="color: #6b7280; margin-left: 8px;"></span>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button id="stop-search-btn" onclick="stopSearch()" 
+                                    class="stop-button" 
+                                    style="display: none;"
+                                    title="Stop the current search">
+                                ⏹ Stop
+                            </button>
+                            <button id="retry-all-failed-btn" onclick="retryAllFailed()" 
+                                    class="reload-button" 
+                                    style="display: none;"
+                                    title="Retry all failed date combinations">
+                                ↻ Retry All Failed
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tabs">
+                        <button class="tab-button active" onclick="switchTab('date-view')" id="tab-date-view">Date View</button>
+                        <button class="tab-button" onclick="switchTab('hotel-view')" id="tab-hotel-view">Hotel View</button>
+                    </div>
+                    <div id="date-view" class="tab-content active">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Property</th>
+                                    <th>Price</th>
+                                    <th>Review score</th>
+                                    <th>Location Info</th>
+                                    <th>Link</th>
+                                </tr>
+                            </thead>
+                            <tbody id="results-tbody">
+                `;
+
+                // Create a map to track state for each date combination
+                const dateStateMap = new Map();
+                window.dateStateMap = dateStateMap; // Make accessible to global functions
+                sortedDateCombinations.forEach(([checkin, checkout]) => {
+                    const dateKey = `${checkin}_${checkout}`;
+                    const safeId = dateKey.replace(/[^a-zA-Z0-9]/g, '-');
+                    dateStateMap.set(dateKey, {
+                        checkin,
+                        checkout,
+                        status: 'pending', // pending, loading, success, error
+                        results: [],
+                        error: null,
+                        headerRowId: `date-header-${safeId}`,
+                        statusSpanId: `date-status-${safeId}`,
+                        containerId: `date-container-${safeId}`
+                    });
+
+                    // Add date header row and container for properties
+                    tableHtml += `
+                        <tr class="date-header-row" id="date-header-${safeId}">
+                            <td colspan="5" id="date-header-content-${safeId}" style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>
+                                    ${formatDate(checkin)} → ${formatDate(checkout)} <span id="date-status-${safeId}" style="color: #6b7280; font-weight: 500;">(loading...)</span>
+                                </span>
+                                <button onclick="retryDateSearch('${dateKey}', '${escapeHtml(checkin)}', '${escapeHtml(checkout)}')" 
+                                        class="reload-button" 
+                                        title="Reload this date combination">
+                                    ↻ Reload
+                                </button>
+                            </td>
+                        </tr>
+                        <tr id="date-container-${safeId}">
+                            <td colspan="5" style="padding: 0;">
+                                <div id="date-properties-${safeId}"></div>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                tableHtml += `
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="hotel-view" class="tab-content">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Property</th>
+                                    <th>Available Dates</th>
+                                    <th>Price Range</th>
+                                    <th>Review Score</th>
+                                    <th>Location Info</th>
+                                    <th>Link</th>
+                                </tr>
+                            </thead>
+                            <tbody id="hotel-results-tbody">
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+
+                resultsDiv.innerHTML = tableHtml;
+
+                // Function to update global status
+                const updateGlobalStatus = () => {
+                    const statusBar = document.getElementById('global-status-text');
+                    const percentageSpan = document.getElementById('global-status-percentage');
+                    const retryAllBtn = document.getElementById('retry-all-failed-btn');
+                    const stopBtn = document.getElementById('stop-search-btn');
+                    
+                    if (!statusBar || !percentageSpan) return;
+                    
+                    let total = 0;
+                    let success = 0;
+                    let error = 0;
+                    let loading = 0;
+                    let retrying = 0;
+                    
+                    dateStateMap.forEach((state) => {
+                        total++;
+                        if (state.status === 'success') {
+                            success++;
+                        } else if (state.status === 'error') {
+                            error++;
+                        } else if (state.status === 'loading') {
+                            loading++;
+                        } else if (state.status === 'retrying') {
+                            retrying++;
+                        }
+                    });
+                    
+                    const percentage = total > 0 ? Math.round((success / total) * 100) : 0;
+                    const isSearching = loading > 0 || retrying > 0;
+                    const isCancelled = window.searchCancelled;
+                    
+                    if (isCancelled) {
+                        statusBar.textContent = `Cancelled: ${success} succeeded, ${error} failed`;
+                        statusBar.style.color = '#f59e0b';
+                    } else if (isSearching) {
+                        statusBar.textContent = `Loading: ${success} succeeded, ${loading + retrying} in progress, ${error} failed`;
+                        statusBar.style.color = '#374151';
+                    } else if (error > 0) {
+                        statusBar.textContent = `Complete: ${success} succeeded, ${error} failed`;
+                        statusBar.style.color = error === total ? '#dc2626' : '#f59e0b';
+                    } else {
+                        statusBar.textContent = `Complete: All ${success} date combinations succeeded`;
+                        statusBar.style.color = '#059669';
+                    }
+                    
+                    percentageSpan.textContent = `(${percentage}%)`;
+                    percentageSpan.style.color = percentage === 100 ? '#059669' : percentage >= 50 ? '#f59e0b' : '#dc2626';
+                    
+                    // Show/hide stop button based on search status
+                    if (stopBtn) {
+                        stopBtn.style.display = (isSearching && !isCancelled) ? 'inline-block' : 'none';
+                    }
+                    
+                    // Show retry all button if there are failed combinations (and not searching)
+                    if (retryAllBtn) {
+                        retryAllBtn.style.display = (error > 0 && !isSearching) ? 'inline-block' : 'none';
+                    }
+                };
+                
+                // Make updateGlobalStatus globally accessible
+                window.updateGlobalStatus = updateGlobalStatus;
+                
+                // Initialize global status
+                setTimeout(() => updateGlobalStatus(), 100);
+                
+                // Function to update a date combination's results
+                const updateDateResults = (dateKey, checkin, checkout, results, status, error, retryCount = 0) => {
+                    const safeId = dateKey.replace(/[^a-zA-Z0-9]/g, '-');
+                    const container = document.getElementById(`date-properties-${safeId}`);
+                    const statusSpan = document.getElementById(`date-status-${safeId}`);
+                    
+                    if (!container) {
+                        console.warn(`Container not found for dateKey: ${dateKey}, safeId: ${safeId}`);
+                        console.warn(`Looking for: date-properties-${safeId}`);
+                        console.warn(`Available containers:`, Array.from(document.querySelectorAll('[id^="date-properties-"]')).map(el => el.id));
+                        return;
+                    }
+                    
+                    console.log(`Updating results for ${dateKey}: status=${status}, results count=${results ? results.length : 0}`);
+                    
+                    // Update state map
+                    if (dateStateMap.has(dateKey)) {
+                        dateStateMap.get(dateKey).status = status;
+                        dateStateMap.get(dateKey).results = results || [];
+                        dateStateMap.get(dateKey).error = error || null;
+                    }
+                    
+                    // Update global status
+                    updateGlobalStatus();
+
+                    // Update status in header
+                    if (statusSpan) {
+                        if (status === 'loading') {
+                            statusSpan.textContent = '(loading...)';
+                            statusSpan.style.color = '#6b7280';
+                            statusSpan.style.fontWeight = '500';
+                        } else if (status === 'retrying') {
+                            statusSpan.textContent = `(retrying ${retryCount}/10...)`;
+                            statusSpan.style.color = '#f59e0b';
+                            statusSpan.style.fontWeight = '500';
+                        } else if (status === 'error') {
+                            statusSpan.textContent = '';
+                        } else if (status === 'success') {
+                            // Count unique properties
+                            const uniqueCount = new Set(results.map(r => r.normalizedUrl || r.url)).size;
+                            statusSpan.textContent = `(${uniqueCount} properties)`;
+                            statusSpan.style.color = '#059669';
+                            statusSpan.style.fontWeight = '500';
+                        }
+                    }
+
+                    // Clear existing property rows for this date combination
+                    const tbody = document.getElementById('results-tbody');
+                    if (tbody) {
+                        const existingRows = tbody.querySelectorAll(`tr[data-date-key="${dateKey}"]`);
+                        existingRows.forEach(row => row.remove());
+                    }
+                    
+                    // Clear container content
+                    container.innerHTML = '';
+
+                    if (status === 'error') {
+                        // Show error message with retry button
+                        const errorMsg = error && typeof error === 'string' ? error : (error?.message || String(error) || 'Unknown error');
+                        container.innerHTML = `
+                            <div style="padding: 16px 20px; color: #991b1b; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; margin: 8px;">
+                                <span style="margin-right: 12px;">❌ Search failed: ${escapeHtml(errorMsg)}</span>
+                                <button onclick="retryDateSearch('${dateKey}', '${escapeHtml(checkin)}', '${escapeHtml(checkout)}')" 
+                                        style="padding: 6px 16px; background: #4f46e5; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.875rem; font-weight: 500; transition: background-color 0.15s;">
+                                    Retry
+                                </button>
+                            </div>
+                        `;
+                    } else if (status === 'success') {
+                        // Remove old results for this date combination before adding new ones
+                        window.allSearchResults = window.allSearchResults.filter(r => r.dateKey !== dateKey);
+                        
+                        // Store results globally for hotel view
+                        results.forEach(result => {
+                            if (result.url && result.title) {
+                                if (!result.normalizedUrl && result.url) {
+                                    result.normalizedUrl = searcher.normalizePropertyUrl(result.url);
+                                }
+                                // Add date info to result
+                                result.dateKey = dateKey;
+                                result.checkin = checkin;
+                                result.checkout = checkout;
+                                window.allSearchResults.push(result);
+                            }
+                        });
+                        
+                        // Deduplicate properties by normalized URL for this date
+                        const propertiesByKey = new Map();
+                        results.forEach(result => {
+                            if (!result.url || !result.title) return;
+                            
+                            if (!result.normalizedUrl && result.url) {
+                                result.normalizedUrl = searcher.normalizePropertyUrl(result.url);
+                            }
+                            const key = result.normalizedUrl || result.url;
+                            
+                            if (!propertiesByKey.has(key)) {
+                                propertiesByKey.set(key, {
+                                    name: result.title,
+                                    price: result.price,
+                                    reviewScore: result.reviewScore,
+                                    ratingText: result.rating,
+                                    url: result.url,
+                                    beachInfo: result.beachInfo || null
+                                });
+                            } else {
+                                const existing = propertiesByKey.get(key);
+                                if (!existing.price && result.price) existing.price = result.price;
+                                if (existing.reviewScore === null && result.reviewScore !== null) {
+                                    existing.reviewScore = result.reviewScore;
+                                    existing.ratingText = result.rating;
+                                }
+                                // Update beachInfo if we have new data
+                                if (result.beachInfo) {
+                                    // Merge beachInfo, preferring non-null values
+                                    if (!existing.beachInfo) {
+                                        existing.beachInfo = result.beachInfo;
+                                    } else {
+                                        // Merge: keep locationScore if we have it, update beachRating if we have it
+                                        if (result.beachInfo.locationScore !== null && result.beachInfo.locationScore !== undefined) {
+                                            existing.beachInfo.locationScore = result.beachInfo.locationScore;
+                                        }
+                                        if (result.beachInfo.beachRating !== null && result.beachInfo.beachRating !== undefined) {
+                                            // Ensure it's a number
+                                            const rating = typeof result.beachInfo.beachRating === 'string' 
+                                                ? parseFloat(result.beachInfo.beachRating) 
+                                                : result.beachInfo.beachRating;
+                                            if (!isNaN(rating) && rating >= 1 && rating <= 10) {
+                                                existing.beachInfo.beachRating = rating;
+                                            }
+                                        }
+                                        if (result.beachInfo.beachRatingText) {
+                                            existing.beachInfo.beachRatingText = result.beachInfo.beachRatingText;
+                                        }
+                                        if (result.beachInfo.summary) {
+                                            existing.beachInfo.summary = result.beachInfo.summary;
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                        
+                        // Update hotel view
+                        updateHotelView();
+
+                        const properties = Array.from(propertiesByKey.values());
+                        
+                        if (properties.length === 0) {
+                            // Show "no properties" message as a table row
+                            const tbody = document.getElementById('results-tbody');
+                            const containerRow = document.getElementById(`date-container-${safeId}`);
+                            if (tbody && containerRow) {
+                                const noResultsRow = document.createElement('tr');
+                                noResultsRow.setAttribute('data-date-key', dateKey);
+                                noResultsRow.innerHTML = `
+                                    <td colspan="5" style="padding: 16px; color: #6b7280; font-style: italic; text-align: center;">
+                                        No properties found for this date combination
+                                    </td>
+                                `;
+                                tbody.insertBefore(noResultsRow, containerRow);
+                            }
+                        } else {
+                            // Build table rows for properties - insert directly into tbody
+                            const tbody = document.getElementById('results-tbody');
+                            const containerRow = document.getElementById(`date-container-${safeId}`);
+                            
+                            if (tbody && containerRow) {
+                                properties.forEach(prop => {
+                                    const reviewDisplay =
+                                        prop.reviewScore !== null && prop.reviewScore !== undefined
+                                            ? prop.reviewScore.toFixed(1)
+                                            : '';
+
+                                    const row = document.createElement('tr');
+                                    row.setAttribute('data-date-key', dateKey);
+                                    
+                                    // Format beach info - show location score and beach rating
+                                    // Check if beachInfo is being loaded (currently fetching)
+                                    const normalizedUrl = prop.url ? searcher.normalizePropertyUrl(prop.url) : null;
+                                    const isBeachInfoLoading = normalizedUrl && 
+                                        searcher.beachInfoFetching && 
+                                        searcher.beachInfoFetching.has(normalizedUrl);
+                                    
+                                    let beachInfoDisplay = '';
+                                    if (isBeachInfoLoading) {
+                                        beachInfoDisplay = '<span style="color: #6b7280; font-size: 0.875rem; font-style: italic;">Loading...</span>';
+                                    } else if (prop.beachInfo) {
+                                        console.log(`[Dates View] Property ${prop.name} beachInfo:`, prop.beachInfo);
+                                        const parts = [];
+                                        
+                                        // Always show location score if available
+                                        if (prop.beachInfo.locationScore !== null && 
+                                            prop.beachInfo.locationScore !== undefined && 
+                                            !isNaN(prop.beachInfo.locationScore)) {
+                                            const locationScore = prop.beachInfo.locationScore;
+                                            const scoreColor = locationScore >= 8 ? '#059669' : locationScore >= 6 ? '#f59e0b' : '#dc2626';
+                                            parts.push(`<span style="color: ${scoreColor}; font-size: 0.875rem; font-weight: 500;">Location: ${locationScore}/10</span>`);
+                                        }
+                                        
+                                        // Show beach rating if available (optional)
+                                        console.log(`[Dates View] Checking beachRating: ${prop.beachInfo.beachRating}, type: ${typeof prop.beachInfo.beachRating}, isNaN: ${isNaN(prop.beachInfo.beachRating)}`);
+                                        
+                                        // Convert to number if it's a string and validate
+                                        let beachRatingValue = prop.beachInfo.beachRating;
+                                        if (typeof beachRatingValue === 'string') {
+                                            beachRatingValue = parseFloat(beachRatingValue);
+                                        }
+                                        
+                                        // Round to 1 decimal place and validate
+                                        if (beachRatingValue !== null && 
+                                            beachRatingValue !== undefined && 
+                                            !isNaN(beachRatingValue)) {
+                                            beachRatingValue = Math.round(beachRatingValue * 10) / 10;
+                                            
+                                            // "Top-rated beach nearby" should have a reasonable rating (at least 4.0)
+                                            if (beachRatingValue >= 4.0 && beachRatingValue <= 10) {
+                                                const beachColor = beachRatingValue >= 8 ? '#059669' : beachRatingValue >= 6 ? '#f59e0b' : '#dc2626';
+                                                parts.push(`<span style="color: ${beachColor}; font-size: 0.875rem; font-weight: 500;">Beach: ${beachRatingValue}/10</span>`);
+                                                console.log(`[Dates View] Added beach rating to display: ${beachRatingValue}`);
+                                            } else {
+                                                console.log(`[Dates View] Beach rating ${beachRatingValue} is out of valid range (4.0-10.0), not displaying`);
+                                            }
+                                        }
+                                        
+                                        // Show beachRatingText as fallback only if we don't have a valid numeric rating
+                                        if (parts.length === 0 || (parts.length === 1 && parts[0].includes('Location:'))) {
+                                            if (prop.beachInfo.beachRatingText) {
+                                                parts.push(`<span style="color: #4b5563; font-size: 0.875rem;">${escapeHtml(prop.beachInfo.beachRatingText)}</span>`);
+                                                console.log(`[Dates View] Added beachRatingText to display: ${prop.beachInfo.beachRatingText}`);
+                                            }
+                                        }
+                                        
+                                        // Show closest beach distance if available
+                                        if (prop.beachInfo.closestBeachDistance) {
+                                            const beachDisplay = prop.beachInfo.closestBeachName 
+                                                ? `${escapeHtml(prop.beachInfo.closestBeachName)}: ${escapeHtml(prop.beachInfo.closestBeachDistance)}`
+                                                : `Closest beach: ${escapeHtml(prop.beachInfo.closestBeachDistance)}`;
+                                            parts.push(`<span style="color: #4b5563; font-size: 0.875rem;">${beachDisplay}</span>`);
+                                            console.log(`[Dates View] Added closest beach to display: ${beachDisplay}`);
+                                        }
+                                        
+                                        // Show closest airport distance if available
+                                        if (prop.beachInfo.closestAirportDistance) {
+                                            const airportDisplay = prop.beachInfo.closestAirportName 
+                                                ? `${escapeHtml(prop.beachInfo.closestAirportName)}: ${escapeHtml(prop.beachInfo.closestAirportDistance)}`
+                                                : `Closest airport: ${escapeHtml(prop.beachInfo.closestAirportDistance)}`;
+                                            parts.push(`<span style="color: #4b5563; font-size: 0.875rem;">${airportDisplay}</span>`);
+                                            console.log(`[Dates View] Added closest airport to display: ${airportDisplay}`);
+                                        }
+                                        
+                                        if (parts.length > 0) {
+                                            beachInfoDisplay = parts.join('<br>');
+                                        } else if (prop.beachInfo.summary) {
+                                            beachInfoDisplay = `<span style="color: #4b5563; font-size: 0.875rem;">${escapeHtml(prop.beachInfo.summary)}</span>`;
+                                        } else {
+                                            // No info available after loading
+                                            beachInfoDisplay = '<span style="color: #9ca3af;">—</span>';
+                                        }
+                                    }
+                                    
+                                    row.innerHTML = `
+                                        <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 400px;">
+                                            ${escapeHtml(prop.name)}
+                                        </td>
+                                        <td style="white-space: nowrap; font-weight: 600; color: #111827;">
+                                            ${prop.price ? escapeHtml(prop.price) : '<span style="color: #9ca3af;">—</span>'}
+                                        </td>
+                                        <td style="white-space: nowrap; color: #4b5563;">
+                                            ${reviewDisplay || '<span style="color: #9ca3af;">—</span>'}
+                                        </td>
+                                        <td style="font-size: 0.875rem; min-width: 300px; max-width: 400px; word-wrap: break-word; white-space: normal; line-height: 1.6;">
+                                            ${beachInfoDisplay}
+                                        </td>
+                                        <td style="white-space: nowrap;">
+                                            <a href="${escapeHtml(prop.url)}" target="_blank">Open ↗</a>
+                                        </td>
+                                    `;
+                                    // Insert before the container row
+                                    tbody.insertBefore(row, containerRow);
+                                });
+                            }
+                        }
+                    }
+                };
+
+                // Retry function (needs to be global for onclick)
+                // Store criteria in closure for retry function
+                window.currentSearchCriteria = criteria;
+                window.retryDateSearch = async (dateKey, checkin, checkout) => {
+                    const safeId = dateKey.replace(/[^a-zA-Z0-9]/g, '-');
+                    const statusSpan = document.getElementById(`date-status-${safeId}`);
+                    if (statusSpan) {
+                        statusSpan.textContent = '(loading...)';
+                    }
+                    
+                    updateDateResults(dateKey, checkin, checkout, [], 'loading', null);
+                    
+                    try {
+                        // Search all destinations for this date combination
+                        const allResults = [];
+                        for (const destination of window.currentSearchCriteria.destinations) {
+                            try {
+                                const destinationResults = await searcher.searchDestination(
+                                    destination,
+                                    checkin,
+                                    checkout,
+                                    window.currentSearchCriteria.occupancy,
+                                    window.currentSearchCriteria.childAges,
+                                    window.currentSearchCriteria.preferences
+                                );
+                                allResults.push(...destinationResults);
+                            } catch (destError) {
+                                console.error(`Error retrying ${destination}:`, destError);
+                                // Continue with other destinations
+                            }
+                        }
+                        updateDateResults(dateKey, checkin, checkout, allResults, 'success', null);
+                    } catch (error) {
+                        updateDateResults(dateKey, checkin, checkout, [], 'error', error.message || 'Search failed');
+                    }
+                };
+                
+                // Stop search function
+                window.stopSearch = () => {
+                    console.log('Stopping search...');
+                    window.searchCancelled = true;
+                    
+                    // Update all pending/loading/retrying date combinations to cancelled
+                    if (window.dateStateMap) {
+                        window.dateStateMap.forEach((state, dateKey) => {
+                            if (state.status === 'pending' || state.status === 'loading' || state.status === 'retrying') {
+                                state.status = 'error';
+                                state.error = 'Search cancelled';
+                                
+                                // Update UI for this date combination
+                                const safeId = dateKey.replace(/[^a-zA-Z0-9]/g, '-');
+                                const statusSpan = document.getElementById(`date-status-${safeId}`);
+                                const container = document.getElementById(`date-properties-${safeId}`);
+                                
+                                if (statusSpan) {
+                                    statusSpan.textContent = '';
+                                }
+                                
+                                if (container) {
+                                    container.innerHTML = `
+                                        <div style="padding: 16px 20px; color: #991b1b; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; margin: 8px;">
+                                            <span>⏹ Search cancelled</span>
+                                        </div>
+                                    `;
+                                }
+                            }
+                        });
+                    }
+                    
+                    // Update global status
+                    if (window.updateGlobalStatus) {
+                        window.updateGlobalStatus();
+                    } else {
+                        // Fallback: trigger update via setTimeout
+                        setTimeout(() => {
+                            const updateGlobalStatus = window.updateGlobalStatus;
+                            if (updateGlobalStatus) updateGlobalStatus();
+                        }, 100);
+                    }
+                };
+                
+                // Retry all failed date combinations
+                window.retryAllFailed = async () => {
+                    if (!window.dateStateMap) {
+                        console.log('No date state map available');
+                        return;
+                    }
+                    
+                    const failedCombinations = [];
+                    window.dateStateMap.forEach((state, dateKey) => {
+                        if (state.status === 'error') {
+                            failedCombinations.push({
+                                dateKey,
+                                checkin: state.checkin,
+                                checkout: state.checkout
+                            });
+                        }
+                    });
+                    
+                    if (failedCombinations.length === 0) {
+                        console.log('No failed combinations to retry');
+                        return;
+                    }
+                    
+                    console.log(`Retrying ${failedCombinations.length} failed date combinations...`);
+                    
+                    // Retry each failed combination
+                    for (const combo of failedCombinations) {
+                        await window.retryDateSearch(combo.dateKey, combo.checkin, combo.checkout);
+                        // Small delay between retries to avoid hammering
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                    }
+                };
+
+                // Progress callback
+                const onProgress = (progress) => {
+                    const retryCount = progress.retryCount || 0;
+                    if (progress.status === 'loading') {
+                        updateDateResults(progress.dateKey, progress.checkin, progress.checkout, [], 'loading', null, retryCount);
+                    } else if (progress.status === 'retrying') {
+                        updateDateResults(progress.dateKey, progress.checkin, progress.checkout, [], 'retrying', null, retryCount);
+                    } else if (progress.status === 'success') {
+                        updateDateResults(progress.dateKey, progress.checkin, progress.checkout, progress.results, 'success', null, retryCount);
+                    } else if (progress.status === 'error') {
+                        updateDateResults(progress.dateKey, progress.checkin, progress.checkout, [], 'error', progress.error, retryCount);
+                    }
+                };
+
+                // Perform search with progress callback
+                console.log('Starting search...');
+                const results = await searcher.search(criteria, onProgress);
+                console.log(`Search completed. Total results: ${results ? results.length : 0}`);
+
+                // Hide loading
+                loading.style.display = 'none';
+                button.disabled = false;
+                
+                // Debug: Check if results are being displayed
+                console.log('Results after search:', results);
+                console.log('window.allSearchResults:', window.allSearchResults);
+                console.log('window.allSearchResults length:', window.allSearchResults ? window.allSearchResults.length : 0);
+                
+                // Update global status to hide stop button
+                if (window.updateGlobalStatus) {
+                    window.updateGlobalStatus();
+                }
+                
+                // Enrich results with beach info from property pages (after table is loaded)
+                // Use window.allSearchResults which has dateKey set
+                console.log('Starting beach info enrichment for all results...');
+                setTimeout(() => {
+                    if (window.allSearchResults && window.allSearchResults.length > 0) {
+                        searcher.enrichBeachInfoAndUpdateUI(window.allSearchResults, updateDateResults, updateHotelView).catch(error => {
+                            console.error('Error enriching beach info:', error);
+                        });
+                    }
+                }, 1000); // Wait 1 second for UI to fully render
+
+                // Show stats
+                if (results.length > 0) {
+                    // Count unique properties (by normalized URL)
+                    const uniqueResults = new Set();
+                    results.forEach(result => {
+                        const key = result.normalizedUrl || result.url;
+                        uniqueResults.add(key);
+                    });
+                    
+                    const uniqueCount = uniqueResults.size;
+                    const checkinRange = criteria.checkinFlex.daysBefore + criteria.checkinFlex.daysAfter + 1;
+                    const checkoutRange = criteria.checkoutFlex.daysBefore + criteria.checkoutFlex.daysAfter + 1;
+                    const maxPossibleSearches = criteria.destinations.length * checkinRange * checkoutRange;
+                    
+                    // Calculate actual searches (after stay length filtering)
+                    const dateCombinations = searcher.generateDateCombinations(
+                        criteria.checkin,
+                        criteria.checkout,
+                        criteria.checkinFlex,
+                        criteria.checkoutFlex,
+                        criteria.minStayLength,
+                        criteria.maxStayLength
+                    );
+                    const actualSearches = criteria.destinations.length * dateCombinations.length;
+                    
+                    let statsHtml = `
+                        <h2>Search Results</h2>
+                        <p>Found <strong>${results.length}</strong> total results</p>
+                        <p><strong>${uniqueCount}</strong> unique properties</p>
+                        <p>Searched <strong>${actualSearches}</strong> date combination(s)`;
+                    
+                    if (criteria.minStayLength || criteria.maxStayLength) {
+                        let stayLengthInfo = ' (filtered by stay length: ';
+                        if (criteria.minStayLength && criteria.maxStayLength) {
+                            stayLengthInfo += `${criteria.minStayLength}-${criteria.maxStayLength} nights`;
+                        } else if (criteria.minStayLength) {
+                            stayLengthInfo += `min ${criteria.minStayLength} nights`;
+                        } else {
+                            stayLengthInfo += `max ${criteria.maxStayLength} nights`;
+                        }
+                        stayLengthInfo += ')';
+                        statsHtml += stayLengthInfo;
+                    }
+                    
+                    if (actualSearches < maxPossibleSearches) {
+                        statsHtml += ` (${maxPossibleSearches - actualSearches} combinations filtered out)`;
+                    }
+                    
+                    statsHtml += `</p>`;
+                    
+                    // Show applied filters
+                    const appliedFilters = [];
+                    if (criteria.preferences.minReviewScore !== null) {
+                        appliedFilters.push(`Min review score: ${criteria.preferences.minReviewScore}`);
+                    }
+                    if (criteria.preferences.propertyType && criteria.preferences.propertyType.length > 0) {
+                        const typeLabels = {
+                            'hotel': 'Hotel',
+                            'house': 'House'
+                        };
+                        const typeDisplay = criteria.preferences.propertyType.map(t => typeLabels[t] || t).join(', ');
+                        appliedFilters.push(`Property types (OR): ${typeDisplay}`);
+                    }
+                    if (appliedFilters.length > 0) {
+                        statsHtml += `<p style="font-size: 0.9em; color: #666; margin-top: 10px;"><strong>Applied filters:</strong> ${appliedFilters.join(' | ')}</p>`;
+                    }
+                    
+                    statsDiv.style.display = 'block';
+                    statsDiv.innerHTML = statsHtml;
+                }
+
+                // Results are displayed dynamically via onProgress callback
+                // No need for static display here
+            } catch (err) {
+                loading.style.display = 'none';
+                button.disabled = false;
+                error.style.display = 'block';
+                error.textContent = err.message || 'An error occurred during the search.';
+                console.error('Search error:', err);
+            }
+        });
+
+        // Helper function to escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Function to update hotel view (grouped by hotel)
+        function updateHotelView() {
+            if (!window.allSearchResults || window.allSearchResults.length === 0) {
+                const tbody = document.getElementById('hotel-results-tbody');
+                if (tbody) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="padding: 16px; color: #6b7280; font-style: italic; text-align: center;">No results yet</td></tr>';
+                }
+                return;
+            }
+
+            // Group results by hotel (normalized URL)
+            const hotelsMap = new Map();
+            
+            window.allSearchResults.forEach(result => {
+                if (!result.url || !result.title) return;
+                
+                const key = result.normalizedUrl || result.url;
+                
+                if (!hotelsMap.has(key)) {
+                    hotelsMap.set(key, {
+                        name: result.title,
+                        url: result.url,
+                        normalizedUrl: key,
+                        dates: [],
+                        prices: [],
+                        reviewScore: result.reviewScore,
+                        ratingText: result.rating,
+                        beachInfo: result.beachInfo || null
+                    });
+                }
+                
+                const hotel = hotelsMap.get(key);
+                
+                // Add date combination
+                const dateInfo = {
+                    checkin: result.checkin,
+                    checkout: result.checkout,
+                    price: result.price
+                };
+                
+                // Check if this date combination already exists
+                const dateExists = hotel.dates.some(d => 
+                    d.checkin === dateInfo.checkin && d.checkout === dateInfo.checkout
+                );
+                
+                if (!dateExists) {
+                    hotel.dates.push(dateInfo);
+                }
+                
+                // Update price if we have one
+                if (result.price) {
+                    hotel.prices.push(result.price);
+                }
+                
+                // Update review score if we have a better one
+                if (result.reviewScore !== null) {
+                    if (hotel.reviewScore === null || result.reviewScore > hotel.reviewScore) {
+                        hotel.reviewScore = result.reviewScore;
+                        hotel.ratingText = result.rating;
+                    }
+                }
+                
+                // Update beach info - merge locationScore and beachRating
+                if (result.beachInfo) {
+                    if (!hotel.beachInfo) {
+                        hotel.beachInfo = { ...result.beachInfo };
+                    } else {
+                        // Merge beachInfo, keeping the best values
+                        // Location score: prefer higher score
+                        if (result.beachInfo.locationScore !== null && result.beachInfo.locationScore !== undefined) {
+                            if (hotel.beachInfo.locationScore === null || 
+                                hotel.beachInfo.locationScore === undefined ||
+                                result.beachInfo.locationScore > hotel.beachInfo.locationScore) {
+                                hotel.beachInfo.locationScore = result.beachInfo.locationScore;
+                            }
+                        }
+                        // Beach rating: prefer higher rating
+                        if (result.beachInfo.beachRating !== null && result.beachInfo.beachRating !== undefined) {
+                            // Ensure it's a number
+                            const rating = typeof result.beachInfo.beachRating === 'string' 
+                                ? parseFloat(result.beachInfo.beachRating) 
+                                : result.beachInfo.beachRating;
+                            if (!isNaN(rating) && rating >= 1 && rating <= 10) {
+                                if (hotel.beachInfo.beachRating === null || 
+                                    hotel.beachInfo.beachRating === undefined ||
+                                    rating > hotel.beachInfo.beachRating) {
+                                    hotel.beachInfo.beachRating = rating;
+                                    hotel.beachInfo.beachRatingText = result.beachInfo.beachRatingText;
+                                }
+                            }
+                        }
+                        // Update summary if we have new info
+                        if (result.beachInfo.summary) {
+                            hotel.beachInfo.summary = result.beachInfo.summary;
+                        }
+                    }
+                }
+            });
+
+            // Sort hotels by review score (descending), then by name
+            const hotels = Array.from(hotelsMap.values()).sort((a, b) => {
+                if (a.reviewScore !== null && b.reviewScore !== null) {
+                    return b.reviewScore - a.reviewScore;
+                }
+                if (a.reviewScore !== null) return -1;
+                if (b.reviewScore !== null) return 1;
+                return a.name.localeCompare(b.name);
+            });
+
+            // Render hotel view
+            const tbody = document.getElementById('hotel-results-tbody');
+            if (!tbody) return;
+
+            tbody.innerHTML = '';
+
+            if (hotels.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="padding: 16px; color: #6b7280; font-style: italic; text-align: center;">No properties found</td></tr>';
+                return;
+            }
+
+            const formatDate = (dateStr) => {
+                const date = new Date(dateStr);
+                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            };
+
+            hotels.forEach(hotel => {
+                // Sort dates by check-in date
+                hotel.dates.sort((a, b) => new Date(a.checkin) - new Date(b.checkin));
+
+                // Format date badges
+                const dateBadges = hotel.dates.map(d => {
+                    const checkinFormatted = formatDate(d.checkin);
+                    const checkoutFormatted = formatDate(d.checkout);
+                    return `<span class="date-badge">${checkinFormatted} → ${checkoutFormatted}</span>`;
+                }).join('');
+
+                // Calculate price range
+                let priceRange = '';
+                if (hotel.prices.length > 0) {
+                    const priceValues = hotel.prices
+                        .map(p => {
+                            const match = p.match(/[\d,]+\.?\d*/);
+                            return match ? parseFloat(match[0].replace(/,/g, '')) : null;
+                        })
+                        .filter(p => p !== null);
+                    
+                    if (priceValues.length > 0) {
+                        const minPrice = Math.min(...priceValues);
+                        const maxPrice = Math.max(...priceValues);
+                        const currency = hotel.prices[0].match(/[€$£¥]/)?.[0] || '';
+                        if (minPrice === maxPrice) {
+                            priceRange = `${currency}${minPrice.toFixed(0)}`;
+                        } else {
+                            priceRange = `${currency}${minPrice.toFixed(0)} - ${currency}${maxPrice.toFixed(0)}`;
+                        }
+                    } else {
+                        priceRange = hotel.prices[0]; // Fallback to first price string
+                    }
+                }
+
+                // Format review score
+                const reviewDisplay = hotel.reviewScore !== null && hotel.reviewScore !== undefined
+                    ? hotel.reviewScore.toFixed(1)
+                    : '';
+
+                // Format dates display - show count if many dates
+                let datesDisplay = '';
+                if (hotel.dates.length === 0) {
+                    datesDisplay = '<span style="color: #9ca3af;">—</span>';
+                } else if (hotel.dates.length <= 5) {
+                    // Show all date badges if 5 or fewer
+                    datesDisplay = hotel.dates.map(d => {
+                        const checkinFormatted = formatDate(d.checkin);
+                        const checkoutFormatted = formatDate(d.checkout);
+                        return `<span class="date-badge">${checkinFormatted} → ${checkoutFormatted}</span>`;
+                    }).join('');
+                } else {
+                    // Show first 3 and count
+                    const firstThree = hotel.dates.slice(0, 3).map(d => {
+                        const checkinFormatted = formatDate(d.checkin);
+                        const checkoutFormatted = formatDate(d.checkout);
+                        return `<span class="date-badge">${checkinFormatted} → ${checkoutFormatted}</span>`;
+                    }).join('');
+                    datesDisplay = `${firstThree}<span style="color: #6b7280; font-size: 0.875rem; margin-left: 8px; display: inline-block; padding-top: 4px;">+${hotel.dates.length - 3} more</span>`;
+                }
+
+                // Format beach info - show location score and beach rating
+                // Check if beachInfo is being loaded (currently fetching)
+                const hotelNormalizedUrl = hotel.url ? searcher.normalizePropertyUrl(hotel.url) : null;
+                const isBeachInfoLoading = hotelNormalizedUrl && 
+                    searcher.beachInfoFetching && 
+                    searcher.beachInfoFetching.has(hotelNormalizedUrl);
+                
+                let beachInfoDisplay = '';
+                if (isBeachInfoLoading) {
+                    beachInfoDisplay = '<span style="color: #6b7280; font-size: 0.875rem; font-style: italic;">Loading...</span>';
+                } else if (hotel.beachInfo) {
+                    const parts = [];
+                    
+                    // Always show location score if available
+                    if (hotel.beachInfo.locationScore !== null && 
+                        hotel.beachInfo.locationScore !== undefined && 
+                        !isNaN(hotel.beachInfo.locationScore)) {
+                        const locationScore = hotel.beachInfo.locationScore;
+                        const scoreColor = locationScore >= 8 ? '#059669' : locationScore >= 6 ? '#f59e0b' : '#dc2626';
+                        parts.push(`<span style="color: ${scoreColor}; font-size: 0.875rem; font-weight: 500;">Location: ${locationScore}/10</span>`);
+                    }
+                    
+                    // Show beach rating if available (optional)
+                    console.log(`[Hotel View] Hotel ${hotel.name} beachInfo:`, hotel.beachInfo);
+                    console.log(`[Hotel View] Checking beachRating: ${hotel.beachInfo.beachRating}, type: ${typeof hotel.beachInfo.beachRating}, isNaN: ${isNaN(hotel.beachInfo.beachRating)}`);
+                    
+                    // Convert to number if it's a string and validate
+                    let beachRatingValue = hotel.beachInfo.beachRating;
+                    if (typeof beachRatingValue === 'string') {
+                        beachRatingValue = parseFloat(beachRatingValue);
+                    }
+                    
+                    // Round to 1 decimal place and validate
+                    if (beachRatingValue !== null && 
+                        beachRatingValue !== undefined && 
+                        !isNaN(beachRatingValue)) {
+                        beachRatingValue = Math.round(beachRatingValue * 10) / 10;
+                        
+                        // "Top-rated beach nearby" should have a reasonable rating (at least 4.0)
+                        if (beachRatingValue >= 4.0 && beachRatingValue <= 10) {
+                            const beachColor = beachRatingValue >= 8 ? '#059669' : beachRatingValue >= 6 ? '#f59e0b' : '#dc2626';
+                            parts.push(`<span style="color: ${beachColor}; font-size: 0.875rem; font-weight: 500;">Beach: ${beachRatingValue}/10</span>`);
+                            console.log(`[Hotel View] Added beach rating to display: ${beachRatingValue}`);
+                        } else {
+                            console.log(`[Hotel View] Beach rating ${beachRatingValue} is out of valid range (4.0-10.0), not displaying`);
+                        }
+                    }
+                    
+                    // Show beachRatingText as fallback only if we don't have a valid numeric rating
+                    if (parts.length === 0 || (parts.length === 1 && parts[0].includes('Location:'))) {
+                        if (hotel.beachInfo.beachRatingText) {
+                            parts.push(`<span style="color: #4b5563; font-size: 0.875rem;">${escapeHtml(hotel.beachInfo.beachRatingText)}</span>`);
+                            console.log(`[Hotel View] Added beachRatingText to display: ${hotel.beachInfo.beachRatingText}`);
+                        }
+                    }
+                    
+                    // Show closest beach distance if available
+                    if (hotel.beachInfo.closestBeachDistance) {
+                        const beachDisplay = hotel.beachInfo.closestBeachName 
+                            ? `${escapeHtml(hotel.beachInfo.closestBeachName)}: ${escapeHtml(hotel.beachInfo.closestBeachDistance)}`
+                            : `Closest beach: ${escapeHtml(hotel.beachInfo.closestBeachDistance)}`;
+                        parts.push(`<span style="color: #4b5563; font-size: 0.875rem;">${beachDisplay}</span>`);
+                        console.log(`[Hotel View] Added closest beach to display: ${beachDisplay}`);
+                    }
+                    
+                    // Show closest airport distance if available
+                    if (hotel.beachInfo.closestAirportDistance) {
+                        const airportDisplay = hotel.beachInfo.closestAirportName 
+                            ? `${escapeHtml(hotel.beachInfo.closestAirportName)}: ${escapeHtml(hotel.beachInfo.closestAirportDistance)}`
+                            : `Closest airport: ${escapeHtml(hotel.beachInfo.closestAirportDistance)}`;
+                        parts.push(`<span style="color: #4b5563; font-size: 0.875rem;">${airportDisplay}</span>`);
+                        console.log(`[Hotel View] Added closest airport to display: ${airportDisplay}`);
+                    }
+                    
+                    if (parts.length > 0) {
+                        beachInfoDisplay = parts.join('<br>');
+                    } else if (hotel.beachInfo.summary) {
+                        beachInfoDisplay = `<span style="color: #4b5563; font-size: 0.875rem;">${escapeHtml(hotel.beachInfo.summary)}</span>`;
+                    } else {
+                        // No info available after loading
+                        beachInfoDisplay = '<span style="color: #9ca3af;">—</span>';
+                    }
+                } else {
+                    // No beachInfo at all (not loading, just no data)
+                    beachInfoDisplay = '<span style="color: #9ca3af;">—</span>';
+                }
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td style="font-weight: 500; color: #111827;">
+                        ${escapeHtml(hotel.name)}
+                    </td>
+                    <td style="padding: 12px; line-height: 1.8;">
+                        <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                            ${datesDisplay}
+                        </div>
+                    </td>
+                    <td style="white-space: nowrap; font-weight: 600; color: #111827;">
+                        ${priceRange || '<span style="color: #9ca3af;">—</span>'}
+                    </td>
+                    <td style="white-space: nowrap; color: #4b5563; font-weight: 500;">
+                        ${reviewDisplay || '<span style="color: #9ca3af;">—</span>'}
+                    </td>
+                    <td style="font-size: 0.875rem; min-width: 300px; max-width: 400px; word-wrap: break-word; white-space: normal; line-height: 1.6;">
+                        ${beachInfoDisplay}
+                    </td>
+                    <td style="white-space: nowrap;">
+                        <a href="${escapeHtml(hotel.url)}" target="_blank">Open ↗</a>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Function to switch between tabs
+        window.switchTab = function(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabName).classList.add('active');
+
+            // If switching to hotel view, update it
+            if (tabName === 'hotel-view') {
+                updateHotelView();
+            }
+        };
+
+        // Make escapeHtml available globally for template
+        window.escapeHtml = escapeHtml;
+    </script>
+</body>
+</html>
+

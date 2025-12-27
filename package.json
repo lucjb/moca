@@ -1,0 +1,16 @@
+{
+  "name": "moca-browser-service",
+  "version": "1.0.0",
+  "description": "Browser automation service for Booking.com property page fetching",
+  "main": "browser-service.js",
+  "scripts": {
+    "start": "node browser-service.js",
+    "install-deps": "npm install"
+  },
+  "dependencies": {
+    "puppeteer": "^24.31.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

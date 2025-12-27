@@ -1,0 +1,183 @@
+{
+  "criteria": {
+    "destinations": [
+      "Fuerteventura"
+    ],
+    "stay": {
+      "checkin": "2025-12-19",
+      "checkout": "2025-12-26",
+      "checkin_flex": {
+        "days_before": 0,
+        "days_after": 0
+      },
+      "checkout_flex": {
+        "days_before": 0,
+        "days_after": 0
+      }
+    },
+    "occupancy": {
+      "adults": 2,
+      "children": 3,
+      "rooms": 1
+    },
+    "preferences": {
+      "beachfront": false,
+      "nice_beach": false,
+      "close_to_center_minutes": null,
+      "max_transfer_minutes": null,
+      "all_inclusive": false,
+      "pool": true,
+      "large_room": false,
+      "bathrooms": null,
+      "lift": false,
+      "ground_floor": false,
+      "property_type": "hotel",
+      "free_cancellation": true
+    }
+  },
+  "results": [
+    {
+      "provider": "booking",
+      "destination": "Fuerteventura",
+      "title": "FTV Holidays Homes",
+      "url": "https://www.booking.com/hotel/es/villa-paraiso-geafond1.html?aid=304142&label=mkt123sc-626f5b85-98f6-426b-a708-62b07f3ece7d&ucfs=1&arphpl=1&checkin=2025-12-19&checkout=2025-12-26&group_adults=2&req_adults=2&no_rooms=1&group_children=3&req_children=3&age=0&req_age=0&age=0&req_age=0&age=0&req_age=0&hpos=1&hapos=1&sr_order=popularity&nflt=1&srpvid=8e85dbb4009f69f340dc079df9086f72&srepoch=1764156731&all_sr_blocks=775279901_373459158_6_0_0&highlighted_blocks=775279901_373459158_6_0_0&matching_block_id=775279901_373459158_6_0_0&sr_pri_blocks=775279901_373459158_6_0_0__181700&from=searchresults",
+      "price": "\u20ac 1,817",
+      "rating": "Scored 8.1 8.1 Very Good 176 reviews",
+      "raw": {
+        "checkin": "2025-12-19",
+        "checkout": "2025-12-26",
+        "search_url": "https://www.booking.com/searchresults.html?ss=Fuerteventura&checkin=2025-12-19&checkout=2025-12-26&group_adults=2&group_children=3&no_rooms=1&sb_travel_purpose=leisure&nflt=1"
+      }
+    },
+    {
+      "provider": "booking",
+      "destination": "Fuerteventura",
+      "title": "Barcel\u00f3 Fuerteventura Castillo",
+      "url": "https://www.booking.com/hotel/es/barcelo-fuerteventura-castillo.html?aid=304142&label=mkt123sc-626f5b85-98f6-426b-a708-62b07f3ece7d&ucfs=1&arphpl=1&checkin=2025-12-19&checkout=2025-12-26&group_adults=2&req_adults=2&no_rooms=1&group_children=3&req_children=3&age=0&req_age=0&age=0&req_age=0&age=0&req_age=0&hpos=2&hapos=2&sr_order=popularity&nflt=1&srpvid=8e85dbb4009f69f340dc079df9086f72&srepoch=1764156731&all_sr_blocks=9407428_408647383_1_17_0%2C9407428_408647383_1_17_0&highlighted_blocks=9407428_408647383_1_17_0%2C9407428_408647383_1_17_0&matching_block_id=9407428_408647383_1_17_0&sr_pri_blocks=9407428_408647383_1_17_0__146880%2C9407428_408647383_1_17_0__146880&nad_id=778e786a-7ae0-435c-ac17-1d08b8efbb99_0&nad_cpc=0.5&nad_track=eyJhdWN0aW9uRXBvY2giOjE3NjQxNTY3MzA1NzEsInJhbmsiOjEsImtvZGRpVHJhY2tpbmdJbmZvIjoiVzBlYWg3Q1R4ZUpnUDFqYkF0MFp0ZWp0OTF2bFozZGRkTy9Lblh1OTlUWWlsVmZhV3BpeEdiSVhvZVFCK1dzdGU3WEY3RmMyKzhIdndUclp2OE45SDFBU0lHbnFLcWZURGxlWlVYK3AyeG9rcGtZbldvSUZRMXZhL2xQdmd4RmVqS04randzRUFnRFMyQlBhbnZpejNpSFhEUiswZFFWQlRMMGZPU2tZRGxBT1RrZ2Q1S0ZMV1RiQ1BDUjNkSzdSVnJLRy9ZdHFNRnZMRjIxYWVkd211L0hsWFRCOWxxNTNreG02a2lYZ2R5UU9VMURsdFhnQjErM05yOS9odjJVNUJnWTRQU2M1a0hwUzJGMXpMY3oyUTkxT1c3YWNYc2pPQ0F4aldRdEFwV0o2NkFWdS9BekRZdkZ6WjVPY3lIc2h1QXQ4UDl0L2NTN1FKTmNIYWpMQmlNNnhBVy9oUFM5NVZRMzRWNXAwU040ZlJIeDIrc2lleHVtWVRzVHIzeThwbmtKWFQ2V1ZPRHV2YVlpOWNGK2hlYjN3UXVQd0RqYW1xUXpIeXFkb2l4ZFJ3NHpjRGphdTk3N2kzR0t4Z0pJZlRwNlRJd2ZEZTUwL0FJeUFKL3ZTeWgxZENuVmJDTHRhTGVsVmtubG5HL2dKZlRSSEhhcThLMkkvRDBOVjlDZmtQUGExOEFORUNZWnFBb1lNTzJlTFluaXVacWhUKzlheDZnMGdkWjlLYk5rRklVMURPWHNSRmJXdlE0N09lelZiWENuTlMyaW1OZk1hVUFSU0x2M3JtUUM4NWh4czlQb2QvM25uVkxwd050eWxGejhEWmh5TzU5QjhOZzcwNnQvVmlqdWtNT3RrdkQ5WHBKblNNYWRPZFA4YU9TbjBEVlFoT24zMUFneUl2VUhOSmxPSk0zVlFhMm9ad1VnNlQrYzEramZEbTZlUWJEbXNreEtBc3YyRUdwZ3pidFlqOGZqMGtyakVLamtkU0Y1L0xVZmtjMGVjdUpJb1JzQmk3MW9SYkQ1dlFEV1FXUld3SDBIQ2JPckRoMmkrTkp0MlUwMmRUdFkrSUpHSzFVV1hpNTgwcEtWSzdNSndYSHZ5OHVxV1JmRUhiZFRKNFJGVXdjQVNzd2Z4SmpJa3VmdHFTQUlraXhtOXVHcDUrMXlqaXIrN0FRQmE5d3J5VXdFSnpUejVGMVRoQjJEeitETktEWmdVRkFMZ3dBVk53SDlzYldPWkZQZXJlWktNSlBnOHIra3JvYU9WZHVRUnVpdUZielRvZUtwU1FaZEZnNUxOeE1ZZ1FsTEgxTHJqS0xDbGM5N0lmYWJrUEVZOU5kK2RqUzJ2UVN3amIzM1l2NUdGLzhzTk9taVJ3Zzg4Q0s2RVcvdC9uamw2MjhtUFhaM0hCbW4wcWZacjdza1hFQi8vMkM4WlhWM2hQNWtkdEtvT2dDeGVBMHVablQ0aFpYYVZhaE1Ddks4ejQxN2hoYmRTTEN5V0YxdUljV3FSY3NWNVp6KzIwSUY3cE9ZaTNRWEFQbzAwcHRFUklCcTdaczZUQkQrWE1zbTBYK3hFZUIya1JTU0xlS2h4WmU5enRNZWdKSWlyTi9aWGo3UHc1d044Y01wWk1jMXI1T2lFY1BqYnMzZzcvZDFzV05GckF6VzZJUGpBNnpqcVE1bk5JQkNlcjdOQW41NnY4bmpqUXFlNmtKZUZ2M0VCSGVpd281K1Mxd2J0TFY1c24zTWJ6c1VjKzltVWdlakVOVkJXWCt6NWNHUHUrbldWdmg2RFhzK3pRYW42RUgzNmFBNVBZNFdoek0rSGhibHRnejRGZ3JkdGMrak9lVHJKVGIyNStLczdRZkpjWmlid1V3UEZ4eGVDWTRJWTREaEVqeWtLeVNtMjN0VDFPVXk1a0tKQ3g1bUsvbkcwSVJSNFdLajBZRmpuTmo1QXRCWHpBK3BBQ1JXMFd2WHZzVFdDQ2NiT1c2eklZSmtjIn0%3D&nad_placement=SR_MAIN&from=searchresults",
+      "price": "\u20ac 2,938",
+      "rating": "Scored 8.3 8.3 Very Good 808 reviews",
+      "raw": {
+        "checkin": "2025-12-19",
+        "checkout": "2025-12-26",
+        "search_url": "https://www.booking.com/searchresults.html?ss=Fuerteventura&checkin=2025-12-19&checkout=2025-12-26&group_adults=2&group_children=3&no_rooms=1&sb_travel_purpose=leisure&nflt=1"
+      }
+    },
+    {
+      "provider": "booking",
+      "destination": "Fuerteventura",
+      "title": "HD Lobos Natura Fuerteventura",
+      "url": "https://www.booking.com/hotel/es/lobos-natura-fuerteventura.html?aid=304142&label=mkt123sc-626f5b85-98f6-426b-a708-62b07f3ece7d&ucfs=1&arphpl=1&checkin=2025-12-19&checkout=2025-12-26&group_adults=2&req_adults=2&no_rooms=1&group_children=3&req_children=3&age=0&req_age=0&age=0&req_age=0&age=0&req_age=0&hpos=5&hapos=5&sr_order=popularity&nflt=1&srpvid=8e85dbb4009f69f340dc079df9086f72&srepoch=1764156731&all_sr_blocks=4395620_392975627_2_0_0&highlighted_blocks=4395620_392975627_2_0_0&matching_block_id=4395620_392975627_2_0_0&sr_pri_blocks=4395620_392975627_2_0_0__183038&from=searchresults",
+      "price": "\u20ac 1,830",
+      "rating": "Scored 9.1 9.1 Wonderful 28 reviews",
+      "raw": {
+        "checkin": "2025-12-19",
+        "checkout": "2025-12-26",
+        "search_url": "https://www.booking.com/searchresults.html?ss=Fuerteventura&checkin=2025-12-19&checkout=2025-12-26&group_adults=2&group_children=3&no_rooms=1&sb_travel_purpose=leisure&nflt=1"
+      }
+    },
+    {
+      "provider": "booking",
+      "destination": "Fuerteventura",
+      "title": "Casa Paraiso",
+      "url": "https://www.booking.com/hotel/es/casa-paraiso-caleta-de-fuste.html?aid=304142&label=mkt123sc-626f5b85-98f6-426b-a708-62b07f3ece7d&ucfs=1&arphpl=1&checkin=2025-12-19&checkout=2025-12-26&group_adults=2&req_adults=2&no_rooms=1&group_children=3&req_children=3&age=0&req_age=0&age=0&req_age=0&age=0&req_age=0&hpos=6&hapos=6&sr_order=popularity&nflt=1&srpvid=8e85dbb4009f69f340dc079df9086f72&srepoch=1764156731&all_sr_blocks=971078201_402775379_5_0_0&highlighted_blocks=971078201_402775379_5_0_0&matching_block_id=971078201_402775379_5_0_0&sr_pri_blocks=971078201_402775379_5_0_0__123469&from=searchresults",
+      "price": "\u20ac 1,235",
+      "rating": "Scored 9.2 9.2 Wonderful 35 reviews",
+      "raw": {
+        "checkin": "2025-12-19",
+        "checkout": "2025-12-26",
+        "search_url": "https://www.booking.com/searchresults.html?ss=Fuerteventura&checkin=2025-12-19&checkout=2025-12-26&group_adults=2&group_children=3&no_rooms=1&sb_travel_purpose=leisure&nflt=1"
+      }
+    },
+    {
+      "provider": "booking",
+      "destination": "Fuerteventura",
+      "title": "Casa Lita",
+      "url": "https://www.booking.com/hotel/es/casa-lita-antigua.html?aid=304142&label=mkt123sc-626f5b85-98f6-426b-a708-62b07f3ece7d&ucfs=1&arphpl=1&checkin=2025-12-19&checkout=2025-12-26&group_adults=2&req_adults=2&no_rooms=1&group_children=3&req_children=3&age=0&req_age=0&age=0&req_age=0&age=0&req_age=0&hpos=11&hapos=11&sr_order=popularity&nflt=1&srpvid=8e85dbb4009f69f340dc079df9086f72&srepoch=1764156731&all_sr_blocks=1482764401_419774599_4_0_0&highlighted_blocks=1482764401_419774599_4_0_0&matching_block_id=1482764401_419774599_4_0_0&sr_pri_blocks=1482764401_419774599_4_0_0__60750&from=searchresults",
+      "price": "\u20ac 608",
+      "rating": "Scored 8.0 8.0 Very Good 1 review",
+      "raw": {
+        "checkin": "2025-12-19",
+        "checkout": "2025-12-26",
+        "search_url": "https://www.booking.com/searchresults.html?ss=Fuerteventura&checkin=2025-12-19&checkout=2025-12-26&group_adults=2&group_children=3&no_rooms=1&sb_travel_purpose=leisure&nflt=1"
+      }
+    },
+    {
+      "provider": "booking",
+      "destination": "Fuerteventura",
+      "title": "Casa Mela",
+      "url": "https://www.booking.com/hotel/es/casa-mela.html?aid=304142&label=mkt123sc-626f5b85-98f6-426b-a708-62b07f3ece7d&ucfs=1&arphpl=1&checkin=2025-12-19&checkout=2025-12-26&group_adults=2&req_adults=2&no_rooms=1&group_children=3&req_children=3&age=0&req_age=0&age=0&req_age=0&age=0&req_age=0&hpos=13&hapos=13&sr_order=popularity&nflt=1&srpvid=8e85dbb4009f69f340dc079df9086f72&srepoch=1764156731&all_sr_blocks=1188009702_413798141_4_0_0&highlighted_blocks=1188009702_413798141_4_0_0&matching_block_id=1188009702_413798141_4_0_0&sr_pri_blocks=1188009702_413798141_4_0_0__73608&from=searchresults",
+      "price": "\u20ac 736",
+      "rating": null,
+      "raw": {
+        "checkin": "2025-12-19",
+        "checkout": "2025-12-26",
+        "search_url": "https://www.booking.com/searchresults.html?ss=Fuerteventura&checkin=2025-12-19&checkout=2025-12-26&group_adults=2&group_children=3&no_rooms=1&sb_travel_purpose=leisure&nflt=1"
+      }
+    },
+    {
+      "provider": "booking",
+      "destination": "Fuerteventura",
+      "title": "Vivelorural Las Coquetas, Caleta de Fuste",
+      "url": "https://www.booking.com/hotel/es/villa-las-coquetas.html?aid=304142&label=mkt123sc-626f5b85-98f6-426b-a708-62b07f3ece7d&ucfs=1&arphpl=1&checkin=2025-12-19&checkout=2025-12-26&group_adults=2&req_adults=2&no_rooms=1&group_children=3&req_children=3&age=0&req_age=0&age=0&req_age=0&age=0&req_age=0&hpos=16&hapos=16&sr_order=popularity&nflt=1&srpvid=8e85dbb4009f69f340dc079df9086f72&srepoch=1764156731&all_sr_blocks=722386501_405605643_2_0_0&highlighted_blocks=722386501_405605643_2_0_0&matching_block_id=722386501_405605643_2_0_0&sr_pri_blocks=722386501_405605643_2_0_0__119400&from=searchresults",
+      "price": "\u20ac 1,194",
+      "rating": "Scored 8.1 8.1 Very Good 22 reviews",
+      "raw": {
+        "checkin": "2025-12-19",
+        "checkout": "2025-12-26",
+        "search_url": "https://www.booking.com/searchresults.html?ss=Fuerteventura&checkin=2025-12-19&checkout=2025-12-26&group_adults=2&group_children=3&no_rooms=1&sb_travel_purpose=leisure&nflt=1"
+      }
+    },
+    {
+      "provider": "booking",
+      "destination": "Fuerteventura",
+      "title": "Elba Carlota Beach & Golf Resort",
+      "url": "https://www.booking.com/hotel/es/elba-carlota.html?aid=304142&label=mkt123sc-626f5b85-98f6-426b-a708-62b07f3ece7d&ucfs=1&arphpl=1&checkin=2025-12-19&checkout=2025-12-26&group_adults=2&req_adults=2&no_rooms=1&group_children=3&req_children=3&age=0&req_age=0&age=0&req_age=0&age=0&req_age=0&hpos=19&hapos=19&sr_order=popularity&nflt=1&srpvid=8e85dbb4009f69f340dc079df9086f72&srepoch=1764156731&all_sr_blocks=9427833_119603295_0_1_0&highlighted_blocks=9427833_119603295_0_1_0&matching_block_id=9427833_119603295_0_1_0&sr_pri_blocks=9427833_119603295_0_1_0__501464&from=searchresults",
+      "price": "\u20ac 5,015",
+      "rating": "Scored 8.3 8.3 Very Good 859 reviews",
+      "raw": {
+        "checkin": "2025-12-19",
+        "checkout": "2025-12-26",
+        "search_url": "https://www.booking.com/searchresults.html?ss=Fuerteventura&checkin=2025-12-19&checkout=2025-12-26&group_adults=2&group_children=3&no_rooms=1&sb_travel_purpose=leisure&nflt=1"
+      }
+    },
+    {
+      "provider": "booking",
+      "destination": "Fuerteventura",
+      "title": "Casa Alubsan",
+      "url": "https://www.booking.com/hotel/es/casa-alubsan-puerto-del-rosario1.html?aid=304142&label=mkt123sc-626f5b85-98f6-426b-a708-62b07f3ece7d&ucfs=1&arphpl=1&checkin=2025-12-19&checkout=2025-12-26&group_adults=2&req_adults=2&no_rooms=1&group_children=3&req_children=3&age=0&req_age=0&age=0&req_age=0&age=0&req_age=0&hpos=23&hapos=23&sr_order=popularity&nflt=1&srpvid=8e85dbb4009f69f340dc079df9086f72&srepoch=1764156731&all_sr_blocks=1316914101_404435988_5_0_0&highlighted_blocks=1316914101_404435988_5_0_0&matching_block_id=1316914101_404435988_5_0_0&sr_pri_blocks=1316914101_404435988_5_0_0__115950&from=searchresults",
+      "price": "\u20ac 1,160",
+      "rating": "Scored 9.6 9.6 Exceptional 10 reviews",
+      "raw": {
+        "checkin": "2025-12-19",
+        "checkout": "2025-12-26",
+        "search_url": "https://www.booking.com/searchresults.html?ss=Fuerteventura&checkin=2025-12-19&checkout=2025-12-26&group_adults=2&group_children=3&no_rooms=1&sb_travel_purpose=leisure&nflt=1"
+      }
+    },
+    {
+      "provider": "booking",
+      "destination": "Fuerteventura",
+      "title": "BLUESEA Aloe Corralejo",
+      "url": "https://www.booking.com/hotel/es/aloe-club-resort.html?aid=304142&label=mkt123sc-626f5b85-98f6-426b-a708-62b07f3ece7d&ucfs=1&arphpl=1&checkin=2025-12-19&checkout=2025-12-26&group_adults=2&req_adults=2&no_rooms=1&group_children=3&req_children=3&age=0&req_age=0&age=0&req_age=0&age=0&req_age=0&hpos=24&hapos=24&sr_order=popularity&nflt=1&srpvid=8e85dbb4009f69f340dc079df9086f72&srepoch=1764156731&all_sr_blocks=4480696_419719534_3_85_0&highlighted_blocks=4480696_419719534_3_85_0&matching_block_id=4480696_419719534_3_85_0&sr_pri_blocks=4480696_419719534_3_85_0__296733&from=searchresults",
+      "price": "\u20ac 2,967",
+      "rating": "Scored 7.3 7.3 Good 562 reviews",
+      "raw": {
+        "checkin": "2025-12-19",
+        "checkout": "2025-12-26",
+        "search_url": "https://www.booking.com/searchresults.html?ss=Fuerteventura&checkin=2025-12-19&checkout=2025-12-26&group_adults=2&group_children=3&no_rooms=1&sb_travel_purpose=leisure&nflt=1"
+      }
+    },
+    {
+      "provider": "booking",
+      "destination": "Fuerteventura",
+      "title": "Holidayhome in Tuineje near Beaches",
+      "url": "https://www.booking.com/hotel/es/cozy-farmhouse-in-tuineje-with-private-swimming-pool.html?aid=304142&label=mkt123sc-626f5b85-98f6-426b-a708-62b07f3ece7d&ucfs=1&arphpl=1&checkin=2025-12-19&checkout=2025-12-26&group_adults=2&req_adults=2&no_rooms=1&group_children=3&req_children=3&age=0&req_age=0&age=0&req_age=0&age=0&req_age=0&hpos=25&hapos=25&sr_order=popularity&nflt=1&srpvid=8e85dbb4009f69f340dc079df9086f72&srepoch=1764156731&all_sr_blocks=605566502_422930738_8_0_0&highlighted_blocks=605566502_422930738_8_0_0&matching_block_id=605566502_422930738_8_0_0&sr_pri_blocks=605566502_422930738_8_0_0__123282&from=searchresults",
+      "price": "\u20ac 1,233",
+      "rating": "Scored 7.2 7.2 Good 16 reviews",
+      "raw": {
+        "checkin": "2025-12-19",
+        "checkout": "2025-12-26",
+        "search_url": "https://www.booking.com/searchresults.html?ss=Fuerteventura&checkin=2025-12-19&checkout=2025-12-26&group_adults=2&group_children=3&no_rooms=1&sb_travel_purpose=leisure&nflt=1"
+      }
+    }
+  ]
+}

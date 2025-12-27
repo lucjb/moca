@@ -1,0 +1,19 @@
+{
+  "destinations": ["Fuerteventura"],
+  "stay": {
+    "checkin": "2025-12-19",
+    "checkout": "2025-12-26",
+    "checkin_flex": {"days_before": 0, "days_after": 0},
+    "checkout_flex": {"days_before": 0, "days_after": 0}
+  },
+  "occupancy": {
+    "adults": 2,
+    "children": 3,
+    "rooms": 1
+  },
+  "preferences": {
+    "pool": true,
+    "free_cancellation": true,
+    "property_type": "hotel"
+  }
+}
